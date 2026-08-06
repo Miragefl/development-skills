@@ -741,3 +741,10 @@ Plan complete and saved to `docs/design/plans/2026-08-05-java-skills.md`.
 - README 更新为四件套。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
 
 > 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs 同步) → `96ce984`(四件套 java-plan)。
+
+### 架构演进（2026-08-06，四件套 → 五件套）
+- 新增独立 **`java-debug`** skill（系统化排查修 bug：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；附 `DEBUG-METHODS.md`（排查手法 + 常见 Java bug 速查）。
+- java-flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分（与 java-plan 同款逻辑）。
+- README / spec 同步为五件套。
+
+> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs同步) → `96ce984`(四件套) → `341d7d9`(docs同步四件套) → `52766f2`(确认gate) → 本次(java-debug)。

@@ -202,6 +202,30 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 ---
 
+### 4.5 `java-debug` —— 系统化排查
+
+**触发描述（description 草案）**：
+> Use when fixing bugs, diagnosing exceptions/errors, or investigating performance issues in a Java backend. Systematic spine — reproduce, isolate, hypothesize, verify, fix root cause, regression-check. Never guess-edit; reproduce before touching code; fix the cause not the symptom.
+
+**行为规约**：
+1. **复现**：稳定复现，记步骤；不能复现先搞复现，**别动代码**。
+2. **隔离**：二分 / 日志 / 断点缩小到模块 → 方法 → 行。
+3. **假设**：根据现象提根因假设。
+4. **验证**：最小改动 / 临时单测 / 日志验证；错就换假设，别死磕。
+5. **修复**：改最少代码修**根因**（治本不治标）。
+6. **回归**：跑 `test_cmd` + 想新坑（边界 / 并发 / 其他调用方）。
+7. **同步**：动接口/实体按 java-doc 更新。
+
+**三条铁律**：① 不复现不改动 ② 先定位根因再修 ③ 治本不治标。
+
+**与 flow/plan 分工**：feature 走 java-flow；bug 走 java-debug；复杂 / 大影响 bug 先 java-plan 规划排查思路再 java-debug。
+
+**格式外置**：排查手法 + 常见 Java bug 速查见 `DEBUG-METHODS.md`。
+
+**产物**：`skills/java-debug/SKILL.md` + `skills/java-debug/DEBUG-METHODS.md`。
+
+---
+
 ## 5. `install.sh` 设计
 
 **用法**：
@@ -258,6 +282,8 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 | `skills/java-flow/CODING-STANDARDS.md` | reference | 可维护性+设计模式规范（java-flow「实现」阶段引用） |
 | `skills/java-plan/SKILL.md` | skill | 大需求规划（spec+plan 落盘） |
 | `skills/java-plan/PLAN-SPEC-FORMAT.md` | reference | 精简版 spec/plan 格式 |
+| `skills/java-debug/SKILL.md` | skill | 系统化排查修 bug |
+| `skills/java-debug/DEBUG-METHODS.md` | reference | 排查手法 + 常见 Java bug 速查 |
 | `lib/common.sh` | 共享库 | install.sh / validate.sh 共用：NAME_RE / validate_skill_name / get_frontmatter_field |
 | `docs/design/specs/2026-08-05-java-skills-design.md` | 文档 | 本设计文档 |
 
@@ -305,4 +331,5 @@ _参考：[OpenCode Agent Skills](https://opencode.ai/docs/skills/) · [OpenCode
 - **质量重构**：引入 `lib/common.sh` 共享层（NAME_RE / validate_skill_name / get_frontmatter_field）；install.sh 拆分为 `install_one` / `uninstall_one` / `resolve_targets` / `provision_template` + `main()` 包裹；validate.sh 抽 `validate_one_skill` + early-return。原 §5 install.sh 逻辑描述仍准确，内部结构已函数化（SRP）。
 - **规范增强**：新增 `skills/java-flow/CODING-STANDARDS.md`，java-flow「实现」阶段硬性引用，回应"代码要可维护、注重设计模式"的要求。此为 §4.3 的补充——java-flow 产出的代码强制遵循 SOLID / 后端分层 / GoF 模式 / 测试友好。
 - **架构演进（三件套 → 四件套）**：拆出独立 `java-plan` skill 接管大需求规划（写精简 spec+plan 落盘 `docs/specs`、`docs/plans`）；java-flow 撤掉内嵌双模式，回归纯轻量流程；`PLAN-SPEC-FORMAT.md` 从 java-flow 移到 java-plan。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
-- **不变项**：各 skill 单一职责的原则、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）未变。java-flow 仍不生成 plan/spec（大需求由独立的 java-plan 负责，见 §4.4）。
+- **架构演进（四件套 → 五件套）**：新增独立 `java-debug` skill 接管 bug 排查（系统化：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；java-flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分。
+- **不变项**：各 skill 单一职责的原则、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）未变。

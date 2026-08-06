@@ -40,7 +40,7 @@ git clone https://github.com/Miragefl/java-development-skills java-development-s
 cd java-development-skills
 
 ./install.sh                 # 默认装到 ~/.claude/skills/（Claude Code + OpenCode 都能发现）
-./install.sh --opencode      # 额外装到 ~/.config/opencode/skills/（双保险）
+./install.sh --opencode      # OpenCode 专用：装 skill 到 ~/.config/opencode/skills/ + command 到 commands/（/plan /flow 等手动命令）
 ./install.sh --project /path/to/your-java-app   # 装到指定项目的 .claude/skills/
 ./install.sh --uninstall     # 卸载
 ```
@@ -52,6 +52,7 @@ cd java-development-skills
 1. 在你的 Java 项目根创建 `PROJECT-CONTEXT.md`（`--project` 安装会自动拷模板；否则 `cp PROJECT-CONTEXT.template.md 你的项目/PROJECT-CONTEXT.md`），填好 JDK/构建/DB/ORM。
 2. 正常开聊——AI 会按场景自动触发对应 skill。
 3. 文档会生成在项目的 `<doc_root>/`（默认 `docs/`）下：`api/`、`data-model/`、`db/`。
+4. **OpenCode 用户**：`./install.sh --opencode` 额外装 `/context` `/doc` `/flow` `/test` `/debug` `/plan` 手动命令。OpenCode 的 skill 只支持 AI 自动触发，**不支持 `/skill-name`**——这 6 个 command 文件就是给你手动 `/plan` 的入口（内容引导 AI 加载对应 skill）。
 
 ## 设计
 

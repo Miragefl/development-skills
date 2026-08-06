@@ -8,6 +8,7 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 source "${ROOT}/lib/common.sh"
 
 SKILLS_SRC="${ROOT}/skills"
+COMMANDS_SRC="${ROOT}/opencode/commands"
 TEMPLATE="${ROOT}/PROJECT-CONTEXT.template.md"
 
 OPENCODE=0
@@ -76,6 +77,35 @@ provision_template() {
   fi
 }
 
+# OpenCode commands（/plan /flow 等 slash 命令）：仅 --opencode 模式装卸
+# command 是 .md 文件，装到 commands/ 目录（区别于 skill 的 skills/ 目录）
+provision_commands() {
+  [ "$OPENCODE" -eq 1 ] || [ "$UNINSTALL" -eq 1 ] || return 0
+  [ -d "$COMMANDS_SRC" ] || return 0
+  local cmd_dest
+  if [ -n "$PROJECT_ABS" ]; then
+    cmd_dest="${PROJECT_ABS}/.opencode/commands"
+  else
+    cmd_dest="${HOME}/.config/opencode/commands"
+  fi
+  mkdir -p "$cmd_dest"
+  local f name
+  for f in "$COMMANDS_SRC"/*.md; do
+    [ -f "$f" ] || continue
+    name="$(basename "$f")"
+    if [ "$UNINSTALL" -eq 1 ]; then
+      rm -f "${cmd_dest}/${name}" && echo "removed cmd: ${cmd_dest}/${name}"
+    else
+      rm -f "${cmd_dest}/${name}"
+      if ln -s "$f" "${cmd_dest}/${name}" 2>/dev/null; then
+        echo "linked cmd: ${cmd_dest}/${name}"
+      else
+        cp "$f" "${cmd_dest}/${name}"; echo "copied cmd: ${cmd_dest}/${name}"
+      fi
+    fi
+  done
+}
+
 main() {
   echo "== Java Skills $([ "$UNINSTALL" -eq 1 ] && echo 卸载 || echo 安装) =="
   local fail=0
@@ -92,6 +122,7 @@ main() {
     done
   done
   provision_template
+  provision_commands
   echo "== 完成 =="
   return "$fail"
 }

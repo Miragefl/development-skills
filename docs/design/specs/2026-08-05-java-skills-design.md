@@ -334,6 +334,7 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 | `skills/test/SKILL.md` | skill | 测试策略与 TDD |
 | `skills/test/TEST-STRATEGIES.md` | reference | 分层 / Mock / TDD / 测试速查 |
 | `lib/common.sh` | 共享库 | install.sh / validate.sh 共用：NAME_RE / validate_skill_name / get_frontmatter_field |
+| `opencode/commands/*.md` | OpenCode 命令 | 6 个 slash 入口（/context /doc /flow /test /debug /plan），引导加载对应 skill |
 | `docs/design/specs/2026-08-05-java-skills-design.md` | 文档 | 本设计文档 |
 
 ---
@@ -383,4 +384,5 @@ _参考：[OpenCode Agent Skills](https://opencode.ai/docs/skills/) · [OpenCode
 - **架构演进（四件套 → 五件套）**：新增独立 `debug` skill 接管 bug 排查（系统化：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分。
 - **架构演进（五件套 → 六件套）**：新增独立 `test` skill 接管测试（定层 + TDD + 边界 + 覆盖），三原则焊死（测行为不测实现 / 一测试一件事 / 全绿才重构）；flow 的「自检」只保留"跑 test_cmd 验证"，写测试交给 test。理由：测试是独立方法论，按 SOLID-S 拆分。
 - **db 设计规范补强**：新增 `skills/doc/DB-DESIGN.md`（建表设计规范：主键/字段/索引/命名/范式/分表/迁移）；doc 生成 DDL 时遵循，plan spec 模板加「数据模型」维度引用它。决策：db 设计是**设计维度**非开发动作，不独立成 skill，避免与 plan/flow/doc 职责重叠。
+- **OpenCode command 入口**：新增 `opencode/commands/*.md`（6 个 slash 命令：/context /doc /flow /test /debug /plan）；`install.sh --opencode` 同时装 skill 到 `~/.config/opencode/skills/` + command 到 `~/.config/opencode/commands/`。原因：OpenCode 的 skill 只支持 AI 自动触发（`skill` 工具），**不支持 `/<skill-name>` 手动触发**（与 Claude Code 不同），需独立 command 文件做手动入口。
 - **不变项**：各 skill 单一职责的原则、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）未变。

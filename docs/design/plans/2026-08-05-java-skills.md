@@ -762,3 +762,9 @@ Plan complete and saved to `docs/design/plans/2026-08-05-java-skills.md`.
 - `doc` 生成 DDL（`db/schema.sql`、migrations）时遵循它；`plan` spec 模板加「数据模型」维度引用它（大需求设计表时参考）。
 - 顺手修 `PLAN-SPEC-FORMAT.md` 第3行过时措辞（"flow 的大需求模式" → "plan"）。
 - 决策：db 设计是设计维度非开发动作，**不独立成 skill**，避免与 plan/flow/doc 职责重叠。
+
+### OpenCode command 入口（2026-08-06）
+- 新增 `opencode/commands/*.md`（6 个 slash 命令：/context /doc /flow /test /debug /plan），每个 command 引导 AI `skill({name:"xxx"})` 加载对应 skill。
+- `install.sh --opencode` 扩展：新增 `provision_commands` 函数，同时装 skill 到 `~/.config/opencode/skills/` + command 到 `~/.config/opencode/commands/`（--project 模式装到 `<project>/.opencode/commands/`）。卸载 sweep 清两处。
+- 原因：OpenCode 的 skill 只支持 AI 自动触发（`skill` 工具），**不支持 `/<skill-name>`**（与 Claude Code 不同）；独立 command 文件做手动 `/plan` 入口。
+- 已测：`HOME=tmp ./install.sh --opencode` skill(6)+command(6) 同装；卸载干净；command 软链仓库可 git pull 自动更新。

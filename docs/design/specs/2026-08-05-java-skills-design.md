@@ -182,6 +182,25 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 ---
 
+### 4.4 `java-plan` —— 大需求规划
+
+**触发描述（description 草案）**：
+> Use for large Java backend efforts — cross-module, architecture-level, multi-session, or multi-person work. Writes a brief one-page spec to docs/specs/ and a task-checklist plan to docs/plans/ before implementation. Pair with java-flow for coding. Skip for small tasks — use java-flow directly.
+
+**行为规约**：
+1. 读 `PROJECT-CONTEXT.md`（不存在则先按 java-context 创建）。
+2. 写精简 spec 到 `docs/specs/<需求名>.md`：目标(一句话) / 约束 / 模块拆解 / 关键决策 / 风险，一页纸为限。
+3. 写精简 plan 到 `docs/plans/<需求名>.md`：Task 清单，每条标改哪些文件 + 怎么验证 + `- [ ]`。
+4. 使用者认可后，交 java-flow 实现。
+
+**与 java-flow 的分工**：小需求直接 java-flow；大需求先 java-plan 规划再 java-flow 实现。**使用者自决，AI 可建议**。拿不准选 java-flow——文档随时能补，别为小活儿套重壳。
+
+**格式外置**：spec/plan 的精简格式见 `PLAN-SPEC-FORMAT.md`（一页 spec + task 清单，区别于 superpowers 几十页文档）。
+
+**产物**：`skills/java-plan/SKILL.md` + `skills/java-plan/PLAN-SPEC-FORMAT.md`。
+
+---
+
 ## 5. `install.sh` 设计
 
 **用法**：
@@ -234,8 +253,10 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 | `skills/java-context/SKILL.md` | skill | 元信息守护 |
 | `skills/java-doc/SKILL.md` | skill | 文档自动生成（主） |
 | `skills/java-doc/DOC-FORMATS.md` | reference | 三类文档格式规范 |
-| `skills/java-flow/SKILL.md` | skill | 轻量开发流程 |
+| `skills/java-flow/SKILL.md` | skill | 小需求轻量开发流程 |
 | `skills/java-flow/CODING-STANDARDS.md` | reference | 可维护性+设计模式规范（java-flow「实现」阶段引用） |
+| `skills/java-plan/SKILL.md` | skill | 大需求规划（spec+plan 落盘） |
+| `skills/java-plan/PLAN-SPEC-FORMAT.md` | reference | 精简版 spec/plan 格式 |
 | `lib/common.sh` | 共享库 | install.sh / validate.sh 共用：NAME_RE / validate_skill_name / get_frontmatter_field |
 | `docs/design/specs/2026-08-05-java-skills-design.md` | 文档 | 本设计文档 |
 
@@ -282,4 +303,5 @@ _参考：[OpenCode Agent Skills](https://opencode.ai/docs/skills/) · [OpenCode
 
 - **质量重构**：引入 `lib/common.sh` 共享层（NAME_RE / validate_skill_name / get_frontmatter_field）；install.sh 拆分为 `install_one` / `uninstall_one` / `resolve_targets` / `provision_template` + `main()` 包裹；validate.sh 抽 `validate_one_skill` + early-return。原 §5 install.sh 逻辑描述仍准确，内部结构已函数化（SRP）。
 - **规范增强**：新增 `skills/java-flow/CODING-STANDARDS.md`，java-flow「实现」阶段硬性引用，回应"代码要可维护、注重设计模式"的要求。此为 §4.3 的补充——java-flow 产出的代码强制遵循 SOLID / 后端分层 / GoF 模式 / 测试友好。
-- **不变项**：三个 skill 的职责边界、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）、java-flow 不生成 plan/spec 的精简定位（§4.3）均未变。
+- **架构演进（三件套 → 四件套）**：拆出独立 `java-plan` skill 接管大需求规划（写精简 spec+plan 落盘 `docs/specs`、`docs/plans`）；java-flow 撤掉内嵌双模式，回归纯轻量流程；`PLAN-SPEC-FORMAT.md` 从 java-flow 移到 java-plan。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
+- **不变项**：各 skill 单一职责的原则、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）未变。java-flow 仍不生成 plan/spec（大需求由独立的 java-plan 负责，见 §4.4）。

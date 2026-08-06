@@ -734,3 +734,10 @@ Plan complete and saved to `docs/design/plans/2026-08-05-java-skills.md`.
 - 新增 **`skills/java-flow/CODING-STANDARDS.md`**（可维护性总则 / SOLID / 后端分层 / GoF 模式 / 测试友好），java-flow「实现」步骤硬性引用——回应"代码要可维护、注重设计模式"的要求。
 
 > git 历史：`5195c00`（init）→ `670a173`（CODING-STANDARDS）。
+
+### 架构演进（2026-08-06，三件套 → 四件套）
+- 拆出独立 **`java-plan`** skill（大需求规划：精简 spec+plan 落盘 `docs/specs`、`docs/plans`）。
+- **java-flow 撤掉内嵌双模式**，回归纯轻量流程（小需求）；`PLAN-SPEC-FORMAT.md` 从 java-flow 移到 java-plan/。
+- README 更新为四件套。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
+
+> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs 同步) → `96ce984`(四件套 java-plan)。

@@ -1,6 +1,6 @@
 ---
-name: java-test
-description: Use when writing tests, applying TDD, or deciding test strategy for a Java backend (unit/integration/boundary). Pairs with java-flow — flow writes code, this writes tests. Spine — pick test layer, write failing test first (TDD), run to fail, implement to pass, cover boundary/error cases, regression, refactor under green. Reads PROJECT-CONTEXT.md for test_cmd and stack.
+name: test
+description: Use when writing tests, applying TDD, or deciding test strategy for a Java backend (unit/integration/boundary). Pairs with flow — flow writes code, this writes tests. Spine — pick test layer, write failing test first (TDD), run to fail, implement to pass, cover boundary/error cases, regression, refactor under green. Reads PROJECT-CONTEXT.md for test_cmd and stack.
 ---
 
 <what-to-do>
@@ -21,15 +21,15 @@ Run this spine for Java testing:
 
 <supporting-info>
 
-## 与 java-flow 的分工
+## 与 flow 的分工
 
-- **java-flow**：写**实现代码**；它的「自检」只是跑 `test_cmd` 验证。
-- **java-test**：写**测试代码**、定测试策略、套 TDD、补覆盖。
-- 协作：flow 实现功能 → java-test 补测试；严格 TDD 时 java-test 先写失败测试 → flow 实现。
+- **flow**：写**实现代码**；它的「自检」只是跑 `test_cmd` 验证。
+- **test**：写**测试代码**、定测试策略、套 TDD、补覆盖。
+- 协作：flow 实现功能 → test 补测试；严格 TDD 时 test 先写失败测试 → flow 实现。
 
-## 何时用 java-test
+## 何时用 test
 
-- **用**：写单元/集成测试、上 TDD、提升覆盖率、补边界用例、给 bug 写回归测试（配合 java-debug）。
+- **用**：写单元/集成测试、上 TDD、提升覆盖率、补边界用例、给 bug 写回归测试（配合 debug）。
 - **不用**：只跑现有测试（那是 flow 的自检步）。
 
 ## 三条原则

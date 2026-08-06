@@ -1,6 +1,6 @@
 # Java 文档格式规范
 
-供 java-doc 生成三类文档时遵循。固定路径根 = PROJECT-CONTEXT.md 的 `doc_root`（默认 `docs/`）。
+供 doc 生成三类文档时遵循。固定路径根 = PROJECT-CONTEXT.md 的 `doc_root`（默认 `docs/`）。
 
 ## 1. 接口文档 `<doc_root>/api/<模块>.md`
 

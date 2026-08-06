@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 交付一套精简的自有 Java 后端开发 skills（java-context / java-doc / java-flow），含跨工具安装脚本，Claude Code 与 OpenCode 双通用，作为独立 git 仓库分发。
+**Goal:** 交付一套精简的自有 Java 后端开发 skills（context / doc / flow），含跨工具安装脚本，Claude Code 与 OpenCode 双通用，作为独立 git 仓库分发。
 
 **Architecture:** 三个职责单一的极简 SKILL.md（学 grill-me）+ 共享元信息底座 `PROJECT-CONTEXT.md`（学 grill-with-docs 的约定式文档）+ 一个分发到 `~/.claude/skills/`（双工具共认目录）的 install.sh。重的格式规范外置为 reference 文件，按需读取。
 
@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- **Skill 命名规则**：`name` 必须 `^[a-z0-9]+(-[a-z0-9]+)*$`，1–64 字符，且与所在目录名完全一致（双工具一致要求）。本仓库三个 skill 名定为 `java-context`、`java-doc`、`java-flow`。
+- **Skill 命名规则**：`name` 必须 `^[a-z0-9]+(-[a-z0-9]+)*$`，1–64 字符，且与所在目录名完全一致（双工具一致要求）。本仓库三个 skill 名定为 `context`、`doc`、`flow`。
 - **Frontmatter**：每个 SKILL.md 必须以 YAML frontmatter 开头，含 `name`（必填）与 `description`（必填，1–1024 字符，需具体到能正确触发）。未知字段两工具均忽略。
 - **跨工具发现**：OpenCode 原生扫描 `~/.claude/skills/<name>/SKILL.md` 与 `.claude/skills/<name>/SKILL.md`，故默认装到 `~/.claude/skills/` 即双工具通用；`--opencode` 额外写入 `~/.config/opencode/skills/` 做双保险。
 - **精简原则**：主 SKILL.md 控制在数十行；格式规范等重内容外置 reference 文件；懒加载（有料才建文件）。
@@ -31,10 +31,10 @@
 | `.gitignore` | 忽略 OS/编辑器临时文件 | Task 1 |
 | `install.sh` | 跨工具安装（软链/复制、--opencode/--project/--uninstall、name 校验、幂等） | Task 2 |
 | `PROJECT-CONTEXT.template.md` | 元信息模板（拷到目标项目根改填） | Task 3 |
-| `skills/java-context/SKILL.md` | 元信息守护 skill | Task 3 |
-| `skills/java-doc/SKILL.md` | 文档自动生成 skill（主文件） | Task 4 |
-| `skills/java-doc/DOC-FORMATS.md` | 三类文档格式规范（reference，按需读取） | Task 4 |
-| `skills/java-flow/SKILL.md` | 轻量开发流程 skill | Task 5 |
+| `skills/context/SKILL.md` | 元信息守护 skill | Task 3 |
+| `skills/doc/SKILL.md` | 文档自动生成 skill（主文件） | Task 4 |
+| `skills/doc/DOC-FORMATS.md` | 三类文档格式规范（reference，按需读取） | Task 4 |
+| `skills/flow/SKILL.md` | 轻量开发流程 skill | Task 5 |
 | `README.md` | 项目说明 / 安装 / 使用 / 触发场景 | Task 6 |
 | `docs/design/specs/2026-08-05-java-skills-design.md` | 设计文档（已存在） | — |
 | `docs/design/plans/2026-08-05-java-skills.md` | 本计划（已存在） | — |
@@ -57,7 +57,7 @@
 
 ```bash
 cd /Users/viscum/Documents/code/justfun/ai/java-development-skills
-mkdir -p skills/java-context skills/java-doc skills/java-flow tools
+mkdir -p skills/context skills/doc skills/flow tools
 ```
 
 - [ ] **Step 2: 写校验脚本 `tools/validate.sh`**
@@ -98,7 +98,7 @@ chmod +x tools/validate.sh
 ```bash
 ./tools/validate.sh
 ```
-Expected: `FAIL: java-context missing SKILL.md`（及 doc/flow 同样报错），退出码非 0。这确认测试本身能捕获缺失。
+Expected: `FAIL: context missing SKILL.md`（及 doc/flow 同样报错），退出码非 0。这确认测试本身能捕获缺失。
 
 - [ ] **Step 4: 写 `.gitignore`**
 
@@ -243,26 +243,26 @@ chmod +x install.sh
 ```bash
 ./install.sh
 ```
-Expected: 输出含 `SKIP: java-context 无 SKILL.md`（三个都 SKIP），`== 完成 ==`，退出码 0。确认脚本本身可运行、参数解析正常。
+Expected: 输出含 `SKIP: context 无 SKILL.md`（三个都 SKIP），`== 完成 ==`，退出码 0。确认脚本本身可运行、参数解析正常。
 
 - [ ] **Step 3: 测 `--project` 与幂等（建一个最小假 skill 验证软链）**
 
 ```bash
 # 临时造一个合规 skill 用于测安装机制
 mkdir -p /tmp/jstk-test-skill
-printf -- '---\nname: jstk-test-skill\ndescription: temp test\n---\ntmp\n' > skills/java-context/SKILL.md.testonly
-# 用真实机制验证：临时给 java-context 放真 SKILL.md
-printf -- '---\nname: java-context\ndescription: temp\n---\ntmp\n' > skills/java-context/SKILL.md
+printf -- '---\nname: jstk-test-skill\ndescription: temp test\n---\ntmp\n' > skills/context/SKILL.md.testonly
+# 用真实机制验证：临时给 context 放真 SKILL.md
+printf -- '---\nname: context\ndescription: temp\n---\ntmp\n' > skills/context/SKILL.md
 TESTPROJ="$(mktemp -d)"
 ./install.sh --project "$TESTPROJ"
-test -d "$TESTPROJ/.claude/skills/java-context" && echo "PASS: 装入成功"
+test -d "$TESTPROJ/.claude/skills/context" && echo "PASS: 装入成功"
 # 幂等：再装一次不报错
 ./install.sh --project "$TESTPROJ" && echo "PASS: 幂等"
 # 卸载
 ./install.sh --project "$TESTPROJ" --uninstall
-test ! -e "$TESTPROJ/.claude/skills/java-context" && echo "PASS: 卸载干净"
+test ! -e "$TESTPROJ/.claude/skills/context" && echo "PASS: 卸载干净"
 # 清理临时真 SKILL.md（Task 3 会写正式版）
-rm -f skills/java-context/SKILL.md skills/java-context/SKILL.md.testonly
+rm -f skills/context/SKILL.md skills/context/SKILL.md.testonly
 rm -rf /tmp/jstk-test-skill "$TESTPROJ"
 ```
 Expected: 三处 `PASS`。验证安装/幂等/卸载机制正常。
@@ -276,16 +276,16 @@ git commit -m "feat: add cross-tool install.sh (claude code + opencode)"
 
 ---
 
-### Task 3: java-context skill + PROJECT-CONTEXT 模板
+### Task 3: context skill + PROJECT-CONTEXT 模板
 
 **Files:**
 - Create: `PROJECT-CONTEXT.template.md`
-- Create: `skills/java-context/SKILL.md`
+- Create: `skills/context/SKILL.md`
 - Test: `./tools/validate.sh`（应从 FAIL 转 OK）
 
 **Interfaces:**
 - Consumes: 目标项目根 `PROJECT-CONTEXT.md`（运行期由 AI 读取）
-- Produces: `skills/java-context/SKILL.md`（name=`java-context`）；`PROJECT-CONTEXT.template.md`（被 install.sh 拷贝）
+- Produces: `skills/context/SKILL.md`（name=`context`）；`PROJECT-CONTEXT.template.md`（被 install.sh 拷贝）
 
 - [ ] **Step 1: 写 `PROJECT-CONTEXT.template.md`**
 
@@ -293,7 +293,7 @@ git commit -m "feat: add cross-tool install.sh (claude code + opencode)"
 cat > PROJECT-CONTEXT.template.md <<'EOF'
 # Project Context
 
-> 本文件是项目的唯一元信息来源，供 java-context / java-doc / java-flow 读取。
+> 本文件是项目的唯一元信息来源，供 context / doc / flow 读取。
 > 拷到项目根目录改填；能从代码确认的字段（build/package）可留空让 AI 扫码补。
 
 - jdk: 17                      # 如 8 / 11 / 17 / 21
@@ -310,12 +310,12 @@ cat > PROJECT-CONTEXT.template.md <<'EOF'
 EOF
 ```
 
-- [ ] **Step 2: 写 `skills/java-context/SKILL.md`（极简，grill-me 调性）**
+- [ ] **Step 2: 写 `skills/context/SKILL.md`（极简，grill-me 调性）**
 
 ```bash
-cat > skills/java-context/SKILL.md <<'EOF'
+cat > skills/context/SKILL.md <<'EOF'
 ---
-name: java-context
+name: context
 description: Use at the start of any Java backend task, or when project setup (JDK, build tool, database, ORM, package) info is needed. Reads PROJECT-CONTEXT.md from the repo root; if missing, creates it once from the template by scanning the code. Ensures project facts are never asked twice.
 ---
 
@@ -345,42 +345,42 @@ EOF
 ```bash
 ./tools/validate.sh
 ```
-Expected: `OK: java-context`；但 `java-doc` / `java-flow` 仍报 missing SKILL.md，整体退出码非 0。确认 java-context 本身合规。
+Expected: `OK: context`；但 `doc` / `flow` 仍报 missing SKILL.md，整体退出码非 0。确认 context 本身合规。
 
 - [ ] **Step 4: 校验 frontmatter name 与目录名一致**
 
 ```bash
-awk '/^---$/{c++; next} c==1 && /^name:/{print $2; exit}' skills/java-context/SKILL.md
+awk '/^---$/{c++; next} c==1 && /^name:/{print $2; exit}' skills/context/SKILL.md
 ```
-Expected: 输出 `java-context`。
+Expected: 输出 `context`。
 
 - [ ] **Step 5: （可选，需 git 授权）Commit**
 
 ```bash
-git add PROJECT-CONTEXT.template.md skills/java-context/SKILL.md
-git commit -m "feat: add java-context skill and PROJECT-CONTEXT template"
+git add PROJECT-CONTEXT.template.md skills/context/SKILL.md
+git commit -m "feat: add context skill and PROJECT-CONTEXT template"
 ```
 
 ---
 
-### Task 4: java-doc skill + DOC-FORMATS reference
+### Task 4: doc skill + DOC-FORMATS reference
 
 **Files:**
-- Create: `skills/java-doc/SKILL.md`
-- Create: `skills/java-doc/DOC-FORMATS.md`
+- Create: `skills/doc/SKILL.md`
+- Create: `skills/doc/DOC-FORMATS.md`
 - Test: `./tools/validate.sh`
 
 **Interfaces:**
 - Consumes: `PROJECT-CONTEXT.md`（build / db / orm / doc_root / package）；目标项目源码与 SQL。
 - Produces: 文档到 `<doc_root>/api/`、`<doc_root>/data-model/`、`<doc_root>/db/`（懒加载）。
 
-- [ ] **Step 1: 写 `skills/java-doc/DOC-FORMATS.md`（三类文档格式规范）**
+- [ ] **Step 1: 写 `skills/doc/DOC-FORMATS.md`（三类文档格式规范）**
 
 ```bash
-cat > skills/java-doc/DOC-FORMATS.md <<'EOF'
+cat > skills/doc/DOC-FORMATS.md <<'EOF'
 # Java 文档格式规范
 
-供 java-doc 生成三类文档时遵循。固定路径根 = PROJECT-CONTEXT.md 的 `doc_root`（默认 `docs/`）。
+供 doc 生成三类文档时遵循。固定路径根 = PROJECT-CONTEXT.md 的 `doc_root`（默认 `docs/`）。
 
 ## 1. 接口文档 `<doc_root>/api/<模块>.md`
 
@@ -452,12 +452,12 @@ Java → DB（按 `db` 方言调整）：
 EOF
 ```
 
-- [ ] **Step 2: 写 `skills/java-doc/SKILL.md`**
+- [ ] **Step 2: 写 `skills/doc/SKILL.md`**
 
 ```bash
-cat > skills/java-doc/SKILL.md <<'EOF'
+cat > skills/doc/SKILL.md <<'EOF'
 ---
-name: java-doc
+name: doc
 description: Use whenever writing or modifying Java Controllers, DTOs/Entities, or SQL/DDL in a Spring backend. Auto-generates and keeps in sync three doc types at fixed paths under doc_root — REST docs in api/, data-model docs in data-model/, DB scripts in db/. Adapts to Maven/Gradle and the project DB dialect. Reads PROJECT-CONTEXT.md for the stack.
 ---
 
@@ -497,53 +497,53 @@ EOF
 ```bash
 ./tools/validate.sh
 ```
-Expected: `OK: java-context`、`OK: java-doc`；`java-flow` 仍报 missing。退出码非 0。
+Expected: `OK: context`、`OK: doc`；`flow` 仍报 missing。退出码非 0。
 
 - [ ] **Step 4: 校验 SKILL.md 引用的 reference 路径存在**
 
 ```bash
-grep -q 'DOC-FORMATS.md' skills/java-doc/SKILL.md && test -f skills/java-doc/DOC-FORMATS.md && echo "PASS: reference 可达"
+grep -q 'DOC-FORMATS.md' skills/doc/SKILL.md && test -f skills/doc/DOC-FORMATS.md && echo "PASS: reference 可达"
 ```
 Expected: `PASS: reference 可达`。
 
 - [ ] **Step 5: （可选，需 git 授权）Commit**
 
 ```bash
-git add skills/java-doc/SKILL.md skills/java-doc/DOC-FORMATS.md
-git commit -m "feat: add java-doc skill and DOC-FORMATS reference"
+git add skills/doc/SKILL.md skills/doc/DOC-FORMATS.md
+git commit -m "feat: add doc skill and DOC-FORMATS reference"
 ```
 
 ---
 
-### Task 5: java-flow skill
+### Task 5: flow skill
 
 **Files:**
-- Create: `skills/java-flow/SKILL.md`
+- Create: `skills/flow/SKILL.md`
 - Test: `./tools/validate.sh`（应全部 OK，退出码 0）
 
 **Interfaces:**
-- Consumes: `PROJECT-CONTEXT.md`；调用 `java-doc` 同步文档。
-- Produces: `skills/java-flow/SKILL.md`（name=`java-flow`）。
+- Consumes: `PROJECT-CONTEXT.md`；调用 `doc` 同步文档。
+- Produces: `skills/flow/SKILL.md`（name=`flow`）。
 
-- [ ] **Step 1: 写 `skills/java-flow/SKILL.md`**
+- [ ] **Step 1: 写 `skills/flow/SKILL.md`**
 
 ```bash
-cat > skills/java-flow/SKILL.md <<'EOF'
+cat > skills/flow/SKILL.md <<'EOF'
 ---
-name: java-flow
-description: Use for Java backend feature/bug work when you want a lightweight flow instead of heavy multi-stage processes. Minimal spine — understand need, brief design only if complex, implement, self-check (compile/test), sync docs via java-doc. Always read PROJECT-CONTEXT.md first; never re-ask known project facts.
+name: flow
+description: Use for Java backend feature/bug work when you want a lightweight flow instead of heavy multi-stage processes. Minimal spine — understand need, brief design only if complex, implement, self-check (compile/test), sync docs via doc. Always read PROJECT-CONTEXT.md first; never re-ask known project facts.
 ---
 
 <what-to-do>
 
 Run this lightweight spine for Java backend work:
 
-1. **读上下文**: 读 `PROJECT-CONTEXT.md`（不存在则先按 java-context 创建）。绝不重问已知项目事实。
+1. **读上下文**: 读 `PROJECT-CONTEXT.md`（不存在则先按 context 创建）。绝不重问已知项目事实。
 2. **理解需求**: 用一句话复述要做什么；模糊处一次问一个。
 3. **设计要点**: 仅当任务复杂才写几条设计要点；简单任务直接做，不套流程。
 4. **实现**: 改代码前先读相关现有代码；遵循现有模式。
 5. **自检**: 跑 `test_cmd`（编译/测试），基于结果而非猜测。
-6. **同步文档**: 若动了 Controller/Entity/DTO/SQL，按 java-doc 更新对应文档。
+6. **同步文档**: 若动了 Controller/Entity/DTO/SQL，按 doc 更新对应文档。
 
 </what-to-do>
 
@@ -562,13 +562,13 @@ EOF
 ```bash
 ./tools/validate.sh
 ```
-Expected: 三行 `OK: java-context` / `OK: java-doc` / `OK: java-flow`，退出码 0。
+Expected: 三行 `OK: context` / `OK: doc` / `OK: flow`，退出码 0。
 
 - [ ] **Step 3: （可选，需 git 授权）Commit**
 
 ```bash
-git add skills/java-flow/SKILL.md
-git commit -m "feat: add java-flow lightweight dev process skill"
+git add skills/flow/SKILL.md
+git commit -m "feat: add flow lightweight dev process skill"
 ```
 
 ---
@@ -594,9 +594,9 @@ cat > README.md <<'EOF'
 
 | Skill | 干啥 | 触发 |
 |---|---|---|
-| `java-context` | 守护项目元信息（JDK/构建/DB/ORM…）于 `PROJECT-CONTEXT.md`，绝不重复问 | Java 任务开始时 |
-| `java-doc` | 写代码时自动生成/同步 接口/数据模型/DB脚本 三类文档到固定路径 | 写改 Controller/Entity/DTO/SQL 时 |
-| `java-flow` | 轻量开发流程主干，替代重型多阶段流程 | Java 功能/bug 开发时 |
+| `context` | 守护项目元信息（JDK/构建/DB/ORM…）于 `PROJECT-CONTEXT.md`，绝不重复问 | Java 任务开始时 |
+| `doc` | 写代码时自动生成/同步 接口/数据模型/DB脚本 三类文档到固定路径 | 写改 Controller/Entity/DTO/SQL 时 |
+| `flow` | 轻量开发流程主干，替代重型多阶段流程 | Java 功能/bug 开发时 |
 
 ## 安装
 
@@ -666,13 +666,13 @@ Expected: 三个 skill 全 `OK`，退出码 0。
 TESTPROJ="$(mktemp -d)"
 ./install.sh --project "$TESTPROJ"
 # 三个 skill 装入
-for s in java-context java-doc java-flow; do
+for s in context doc flow; do
   test -e "$TESTPROJ/.claude/skills/$s/SKILL.md" && echo "PASS: $s 装入" || echo "FAIL: $s"
 done
 # 模板拷贝
 test -f "$TESTPROJ/PROJECT-CONTEXT.md" && echo "PASS: 模板已拷" || echo "FAIL: 模板未拷"
 # OpenCode 兼容路径（默认装的 ~/.claude/skills 已被 OpenCode 扫描，这里只验证文件就位）
-ls -la "$HOME/.claude/skills" | grep -q java-context && echo "PASS: 全局已装（OpenCode 可发现）"
+ls -la "$HOME/.claude/skills" | grep -q context && echo "PASS: 全局已装（OpenCode 可发现）"
 # 清理
 ./install.sh --project "$TESTPROJ" --uninstall >/dev/null
 rm -rf "$TESTPROJ"
@@ -681,7 +681,7 @@ Expected: 五处 `PASS`。
 
 - [ ] **Step 3: 手工冒烟（人工）**
 
-在一个真实 Java 项目里：装 skill → 填 `PROJECT-CONTEXT.md` → 让 AI 写一个 Controller，确认它主动触发 java-doc 在 `docs/api/` 生成接口文档。确认无报错。
+在一个真实 Java 项目里：装 skill → 填 `PROJECT-CONTEXT.md` → 让 AI 写一个 Controller，确认它主动触发 doc 在 `docs/api/` 生成接口文档。确认无报错。
 
 - [ ] **Step 4: （可选，需 git 授权）Commit 任何验证中的修正**
 
@@ -705,7 +705,7 @@ git commit -m "test: e2e verification"
 
 **2. Placeholder scan**：无 TBD/TODO；LICENSE holder 用 `git config user.name || Contributors` 动态获取（非占位）。✅
 
-**3. Type/名称一致性**：三个 skill 名 `java-context` / `java-doc` / `java-flow` 在目录、frontmatter、install.sh、README、validate.sh 中完全一致。DOC-FORMATS.md 引用路径在 Task 4 Step 4 校验。✅
+**3. Type/名称一致性**：三个 skill 名 `context` / `doc` / `flow` 在目录、frontmatter、install.sh、README、validate.sh 中完全一致。DOC-FORMATS.md 引用路径在 Task 4 Step 4 校验。✅
 
 ---
 
@@ -731,28 +731,28 @@ Plan complete and saved to `docs/design/plans/2026-08-05-java-skills.md`.
 - **跳过的过度设计**（记录在案）：工具表数据驱动、统一遍历器、ROOT 抽函数、BASH_SOURCE 测试守卫、合并 1 次 awk、getopts。
 
 ### 规范增强（2026-08-06）
-- 新增 **`skills/java-flow/CODING-STANDARDS.md`**（可维护性总则 / SOLID / 后端分层 / GoF 模式 / 测试友好），java-flow「实现」步骤硬性引用——回应"代码要可维护、注重设计模式"的要求。
+- 新增 **`skills/flow/CODING-STANDARDS.md`**（可维护性总则 / SOLID / 后端分层 / GoF 模式 / 测试友好），flow「实现」步骤硬性引用——回应"代码要可维护、注重设计模式"的要求。
 
 > git 历史：`5195c00`（init）→ `670a173`（CODING-STANDARDS）。
 
 ### 架构演进（2026-08-06，三件套 → 四件套）
-- 拆出独立 **`java-plan`** skill（大需求规划：精简 spec+plan 落盘 `docs/specs`、`docs/plans`）。
-- **java-flow 撤掉内嵌双模式**，回归纯轻量流程（小需求）；`PLAN-SPEC-FORMAT.md` 从 java-flow 移到 java-plan/。
+- 拆出独立 **`plan`** skill（大需求规划：精简 spec+plan 落盘 `docs/specs`、`docs/plans`）。
+- **flow 撤掉内嵌双模式**，回归纯轻量流程（小需求）；`PLAN-SPEC-FORMAT.md` 从 flow 移到 plan/。
 - README 更新为四件套。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
 
-> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs 同步) → `96ce984`(四件套 java-plan)。
+> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs 同步) → `96ce984`(四件套 plan)。
 
 ### 架构演进（2026-08-06，四件套 → 五件套）
-- 新增独立 **`java-debug`** skill（系统化排查修 bug：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；附 `DEBUG-METHODS.md`（排查手法 + 常见 Java bug 速查）。
-- java-flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分（与 java-plan 同款逻辑）。
+- 新增独立 **`debug`** skill（系统化排查修 bug：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；附 `DEBUG-METHODS.md`（排查手法 + 常见 Java bug 速查）。
+- flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分（与 plan 同款逻辑）。
 - README / spec 同步为五件套。
 
-> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs同步) → `96ce984`(四件套) → `341d7d9`(docs同步四件套) → `52766f2`(确认gate) → 本次(java-debug)。
+> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs同步) → `96ce984`(四件套) → `341d7d9`(docs同步四件套) → `52766f2`(确认gate) → 本次(debug)。
 
 ### 架构演进（2026-08-06，五件套 → 六件套）
-- 新增独立 **`java-test`** skill（测试策略 + TDD + 边界 + 覆盖），三原则焊死（测行为不测实现 / 一测试一件事 / 全绿才重构）；附 `TEST-STRATEGIES.md`（分层 / Mock / TDD / Java 测试速查）。
-- java-flow「自检」只保留跑 test_cmd 验证，写测试交给 java-test；java-flow supporting-info 加指向。
-- 理由：测试是独立方法论，按 SOLID-S 拆分（与 java-plan/java-debug 同款逻辑）。
+- 新增独立 **`test`** skill（测试策略 + TDD + 边界 + 覆盖），三原则焊死（测行为不测实现 / 一测试一件事 / 全绿才重构）；附 `TEST-STRATEGIES.md`（分层 / Mock / TDD / Java 测试速查）。
+- flow「自检」只保留跑 test_cmd 验证，写测试交给 test；flow supporting-info 加指向。
+- 理由：测试是独立方法论，按 SOLID-S 拆分（与 plan/debug 同款逻辑）。
 - README / spec(§4.6/§8/§12) 同步六件套。
 
-> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs同步) → `96ce984`(四件套) → `341d7d9`(docs同步四件套) → `52766f2`(确认gate) → `1fc881d`(java-debug) → 本次(java-test)。
+> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs同步) → `96ce984`(四件套) → `341d7d9`(docs同步四件套) → `52766f2`(确认gate) → `1fc881d`(debug) → 本次(test)。

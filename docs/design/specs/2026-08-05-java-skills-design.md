@@ -21,7 +21,7 @@
 
 ### 非目标（YAGNI 边界，见 §9）
 - 不做 IDE 插件、不做 CI 集成、不做全自动化构建发布。
-- 不重造通用 brainstorming/plan 轮子；`java-flow` 仅做最小主干。
+- 不重造通用 brainstorming/plan 轮子；`flow` 仅做最小主干。
 
 ---
 
@@ -30,14 +30,14 @@
 ### 2.1 核心痛点（来自用户澄清）
 | # | 痛点 | 对应方案 |
 |---|---|---|
-| ① | 不会自动生成接口文档、数据库脚本文档 | `java-doc` skill：写代码时 inline 自动生成 |
-| ② | 文档路径不确定 | `java-doc`：固定路径约定（§6） |
-| ③ | JDK 版本等项目元信息需多次重复提示 | `java-context` skill + `PROJECT-CONTEXT.md` |
-| ④ | superpowers 流程过于繁重 | `java-flow` skill：精简主干 |
+| ① | 不会自动生成接口文档、数据库脚本文档 | `doc` skill：写代码时 inline 自动生成 |
+| ② | 文档路径不确定 | `doc`：固定路径约定（§6） |
+| ③ | JDK 版本等项目元信息需多次重复提示 | `context` skill + `PROJECT-CONTEXT.md` |
+| ④ | superpowers 流程过于繁重 | `flow` skill：精简主干 |
 
 ### 2.2 用户确认的关键决策
 - **形态**：聚焦小 skill 集（职责单一，每个极简）。
-- **范围**：全量三件套（`java-context` + `java-doc` + `java-flow`）。
+- **范围**：全量三件套（`context` + `doc` + `flow`）。
 - **元信息文件位置**：目标项目仓库根目录 `PROJECT-CONTEXT.md`。
 - **文档输出根**：`docs/` 下按类型分类（`docs/api/`、`docs/data-model/`、`docs/db/`）。
 - **技术栈**：多栈兼容（Maven/Gradle + MySQL/PostgreSQL/Oracle 等多种 DB）。
@@ -61,17 +61,16 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 ├── install.sh                           # 一键安装（CC + OpenCode 通用）
 ├── PROJECT-CONTEXT.template.md          # 元信息模板（拷到目标项目根改填）
 ├── LICENSE
+├── lib/common.sh                        # 脚本共享层（NAME_RE / validate_skill_name / get_frontmatter_field）
+├── tools/validate.sh                    # skill 合规校验
 ├── skills/
-│   ├── java-context/
-│   │   └── SKILL.md                     # skill 1：元信息守护
-│   ├── java-doc/
-│   │   ├── SKILL.md                     # skill 2：文档自动生成
-│   │   └── DOC-FORMATS.md              # 三类文档格式规范（按需读取）
-│   └── java-flow/
-│       └── SKILL.md                     # skill 3：轻量开发流程
-└── docs/
-    └── design/specs/                    # 本仓库自身的设计文档
-        └── 2026-08-05-java-skills-design.md
+│   ├── context/SKILL.md                 # 元信息守护
+│   ├── doc/{SKILL.md, DOC-FORMATS.md}        # 文档自动生成
+│   ├── flow/{SKILL.md, CODING-STANDARDS.md}  # 小需求轻量流程
+│   ├── plan/{SKILL.md, PLAN-SPEC-FORMAT.md}  # 大需求规划（确认 gate → flow）
+│   ├── test/{SKILL.md, TEST-STRATEGIES.md}   # 测试策略 + TDD
+│   └── debug/{SKILL.md, DEBUG-METHODS.md}    # 系统化排查修 bug
+└── docs/design/{specs,plans}/           # 本仓库自身的设计文档
 ```
 
 ### 3.2 设计原则
@@ -99,7 +98,7 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 ## 4. Skill 详细设计
 
-### 4.1 `java-context` —— 元信息守护
+### 4.1 `context` —— 元信息守护
 
 **触发描述（description 草案）**：
 > Use at the start of any Java backend task, or when project setup/build/database/JDK info is needed. Reads `PROJECT-CONTEXT.md` from the repo root; if missing, guides the user to create it once from the template. Ensures JDK version, build tool, database, ORM, and package conventions are never asked twice.
@@ -126,11 +125,11 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 - notes: ""                    # 其他约定（缓存、消息队列、特殊规范等）
 ```
 
-**产物**：`skills/java-context/SKILL.md`（数十行）+ `PROJECT-CONTEXT.template.md`。
+**产物**：`skills/context/SKILL.md`（数十行）+ `PROJECT-CONTEXT.template.md`。
 
 ---
 
-### 4.2 `java-doc` —— 文档自动生成
+### 4.2 `doc` —— 文档自动生成
 
 **触发描述（description 草案）**：
 > Use whenever writing or modifying Java Controllers, DTOs/Entities, or SQL/DDL in a Spring backend project. Auto-generates and keeps in sync three doc types at fixed paths: REST/OpenAPI docs under `docs/api/`, data-model docs under `docs/data-model/`, and DB scripts under `docs/db/`. Adapts to Maven/Gradle and the project's database dialect. Reads `PROJECT-CONTEXT.md` for stack info.
@@ -152,18 +151,18 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 **格式规范外置**：三类文档的具体格式（字段表结构、示例写法、DDL 模板）写入 `DOC-FORMATS.md`，主 SKILL.md 仅引用，避免主文件膨胀。
 
-**产物**：`skills/java-doc/SKILL.md` + `skills/java-doc/DOC-FORMATS.md`。
+**产物**：`skills/doc/SKILL.md` + `skills/doc/DOC-FORMATS.md`。
 
 ---
 
-### 4.3 `java-flow` —— 轻量开发流程
+### 4.3 `flow` —— 轻量开发流程
 
 **触发描述（description 草案）**：
-> Use for Java backend feature/bug work when you want a lightweight flow instead of heavy multi-stage processes. Minimal spine: understand need → (only if complex) brief design notes → implement → self-check (compile/test) → sync docs via java-doc. Always read PROJECT-CONTEXT.md first; never re-ask known project facts.
+> Use for Java backend feature/bug work when you want a lightweight flow instead of heavy multi-stage processes. Minimal spine: understand need → (only if complex) brief design notes → implement → self-check (compile/test) → sync docs via doc. Always read PROJECT-CONTEXT.md first; never re-ask known project facts.
 
 **主干（砍到骨头）**：
 ```
-理解需求 →（仅复杂任务）简短设计要点 → 实现 → 自检(编译/测试) → 同步文档(java-doc)
+理解需求 →（仅复杂任务）简短设计要点 → 实现 → 自检(编译/测试) → 同步文档(doc)
 ```
 
 **明确砍掉（对比 superpowers）**：
@@ -175,34 +174,34 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 **强制保留**：
 - 开干前先读 `PROJECT-CONTEXT.md`
 - 基于事实（扫代码）而非猜测
-- 改完代码同步 `java-doc` 文档
+- 改完代码同步 `doc` 文档
 - 简单任务直接做，不强行套流程
 
-**产物**：`skills/java-flow/SKILL.md`（数十行，grill-me 调性）+ `skills/java-flow/CODING-STANDARDS.md`（可维护性+设计模式规范，「实现」阶段硬性引用——见 §12 演进）。
+**产物**：`skills/flow/SKILL.md`（数十行，grill-me 调性）+ `skills/flow/CODING-STANDARDS.md`（可维护性+设计模式规范，「实现」阶段硬性引用——见 §12 演进）。
 
 ---
 
-### 4.4 `java-plan` —— 大需求规划
+### 4.4 `plan` —— 大需求规划
 
 **触发描述（description 草案）**：
-> Use for large Java backend efforts — cross-module, architecture-level, multi-session, or multi-person work. Writes a brief one-page spec to docs/specs/ and a task-checklist plan to docs/plans/ before implementation. Pair with java-flow for coding. Skip for small tasks — use java-flow directly.
+> Use for large Java backend efforts — cross-module, architecture-level, multi-session, or multi-person work. Writes a brief one-page spec to docs/specs/ and a task-checklist plan to docs/plans/ before implementation. Pair with flow for coding. Skip for small tasks — use flow directly.
 
 **行为规约**：
-1. 读 `PROJECT-CONTEXT.md`（不存在则先按 java-context 创建）。
+1. 读 `PROJECT-CONTEXT.md`（不存在则先按 context 创建）。
 2. 写精简 spec 到 `docs/specs/<需求名>.md`：目标(一句话) / 约束 / 模块拆解 / 关键决策 / 风险，一页纸为限。
 3. 写精简 plan 到 `docs/plans/<需求名>.md`：Task 清单，每条标改哪些文件 + 怎么验证 + `- [ ]`。
 4. **停下来等用户确认**（硬性 gate）：spec+plan 落盘后明确请用户审阅，不在确认前开始写代码；要改则改完再次确认。
-5. **确认后自动转 java-flow**：衔接 java-flow 进入实现（套用 CODING-STANDARDS，动 Controller/Entity/DTO/SQL 时同步 java-doc）。
+5. **确认后自动转 flow**：衔接 flow 进入实现（套用 CODING-STANDARDS，动 Controller/Entity/DTO/SQL 时同步 doc）。
 
-**与 java-flow 的分工**：小需求直接 java-flow；大需求先 java-plan 规划再 java-flow 实现。**使用者自决，AI 可建议**。拿不准选 java-flow——文档随时能补，别为小活儿套重壳。
+**与 flow 的分工**：小需求直接 flow；大需求先 plan 规划再 flow 实现。**使用者自决，AI 可建议**。拿不准选 flow——文档随时能补，别为小活儿套重壳。
 
 **格式外置**：spec/plan 的精简格式见 `PLAN-SPEC-FORMAT.md`（一页 spec + task 清单，区别于 superpowers 几十页文档）。
 
-**产物**：`skills/java-plan/SKILL.md` + `skills/java-plan/PLAN-SPEC-FORMAT.md`。
+**产物**：`skills/plan/SKILL.md` + `skills/plan/PLAN-SPEC-FORMAT.md`。
 
 ---
 
-### 4.5 `java-debug` —— 系统化排查
+### 4.5 `debug` —— 系统化排查
 
 **触发描述（description 草案）**：
 > Use when fixing bugs, diagnosing exceptions/errors, or investigating performance issues in a Java backend. Systematic spine — reproduce, isolate, hypothesize, verify, fix root cause, regression-check. Never guess-edit; reproduce before touching code; fix the cause not the symptom.
@@ -214,22 +213,22 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 4. **验证**：最小改动 / 临时单测 / 日志验证；错就换假设，别死磕。
 5. **修复**：改最少代码修**根因**（治本不治标）。
 6. **回归**：跑 `test_cmd` + 想新坑（边界 / 并发 / 其他调用方）。
-7. **同步**：动接口/实体按 java-doc 更新。
+7. **同步**：动接口/实体按 doc 更新。
 
 **三条铁律**：① 不复现不改动 ② 先定位根因再修 ③ 治本不治标。
 
-**与 flow/plan 分工**：feature 走 java-flow；bug 走 java-debug；复杂 / 大影响 bug 先 java-plan 规划排查思路再 java-debug。
+**与 flow/plan 分工**：feature 走 flow；bug 走 debug；复杂 / 大影响 bug 先 plan 规划排查思路再 debug。
 
 **格式外置**：排查手法 + 常见 Java bug 速查见 `DEBUG-METHODS.md`。
 
-**产物**：`skills/java-debug/SKILL.md` + `skills/java-debug/DEBUG-METHODS.md`。
+**产物**：`skills/debug/SKILL.md` + `skills/debug/DEBUG-METHODS.md`。
 
 ---
 
-### 4.6 `java-test` —— 测试策略与 TDD
+### 4.6 `test` —— 测试策略与 TDD
 
 **触发描述（description 草案）**：
-> Use when writing tests, applying TDD, or deciding test strategy for a Java backend. Pairs with java-flow — flow writes code, this writes tests.
+> Use when writing tests, applying TDD, or deciding test strategy for a Java backend. Pairs with flow — flow writes code, this writes tests.
 
 **行为规约**：
 1. **定层**：单元（Service/逻辑）/ 集成（Controller）/ DAO（Mapper），不混层。
@@ -242,11 +241,11 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 **三条原则**：① 测行为不测实现 ② 一个测试一件事 ③ 测试是安全网（全绿才重构）。
 
-**与 flow 分工**：flow 写实现（自检只跑 `test_cmd` 验证）；java-test 写测试、定策略、TDD。
+**与 flow 分工**：flow 写实现（自检只跑 `test_cmd` 验证）；test 写测试、定策略、TDD。
 
 **格式外置**：分层 / Mock / TDD / Java 测试速查见 `TEST-STRATEGIES.md`。
 
-**产物**：`skills/java-test/SKILL.md` + `skills/java-test/TEST-STRATEGIES.md`。
+**产物**：`skills/test/SKILL.md` + `skills/test/TEST-STRATEGIES.md`。
 
 ---
 
@@ -256,18 +255,18 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 | 入口场景 | 链路 |
 |---|---|
-| 大需求 / 架构级 | java-plan（spec+plan + 确认 gate）→ java-flow（实现）→ java-test（测试） |
-| 小功能 | java-flow（实现）→ java-test（测试） |
-| 修 bug / 异常 / 性能 | java-debug（系统化排查 + 治本修复）→ java-test（回归测试） |
+| 大需求 / 架构级 | plan（spec+plan + 确认 gate）→ flow（实现）→ test（测试） |
+| 小功能 | flow（实现）→ test（测试） |
+| 修 bug / 异常 / 性能 | debug（系统化排查 + 治本修复）→ test（回归测试） |
 
 **横切（所有场景共用）**：
-- 任何 skill 开干前读 `java-context` 维护的 `PROJECT-CONTEXT.md`（元信息底座，不重复问）。
-- 任意 skill 动到 Controller/Entity/DTO/SQL → 触发 `java-doc` 同步文档到 `docs/api`、`docs/data-model`、`docs/db`。
+- 任何 skill 开干前读 `context` 维护的 `PROJECT-CONTEXT.md`（元信息底座，不重复问）。
+- 任意 skill 动到 Controller/Entity/DTO/SQL → 触发 `doc` 同步文档到 `docs/api`、`docs/data-model`、`docs/db`。
 
 **交接点（硬性 gate / 职责边界）**：
-- **java-plan → java-flow**：spec+plan 落盘后**必须用户确认**才转实现（确认 gate，见 §4.4）。
-- **java-flow → java-test**：flow 自检只跑 `test_cmd` 验证；写测试由 java-test 负责（见 §4.6）。
-- **java-debug → java-test**：bug 修完补回归测试，防回归。
+- **plan → flow**：spec+plan 落盘后**必须用户确认**才转实现（确认 gate，见 §4.4）。
+- **flow → test**：flow 自检只跑 `test_cmd` 验证；写测试由 test 负责（见 §4.6）。
+- **debug → test**：bug 修完补回归测试，防回归。
 
 **自决原则**：使用者判断走哪条链路（大 / 小需求、feature / bug），AI 可建议但最终使用者定（见各 skill 的「何时用」）。
 
@@ -298,7 +297,7 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 ## 6. 文档路径约定（写死）
 
-目标项目内，`java-doc` 生成物的固定位置（根 = `PROJECT-CONTEXT.md` 的 `doc_root`，默认 `docs/`）：
+目标项目内，`doc` 生成物的固定位置（根 = `PROJECT-CONTEXT.md` 的 `doc_root`，默认 `docs/`）：
 
 | 类型 | 路径 | 粒度 |
 |---|---|---|
@@ -322,17 +321,17 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 | `install.sh` | 脚本 | 跨工具安装（可执行） |
 | `PROJECT-CONTEXT.template.md` | 模板 | 元信息模板 |
 | `LICENSE` | 文档 | 开源协议（待用户定，默认 MIT） |
-| `skills/java-context/SKILL.md` | skill | 元信息守护 |
-| `skills/java-doc/SKILL.md` | skill | 文档自动生成（主） |
-| `skills/java-doc/DOC-FORMATS.md` | reference | 三类文档格式规范 |
-| `skills/java-flow/SKILL.md` | skill | 小需求轻量开发流程 |
-| `skills/java-flow/CODING-STANDARDS.md` | reference | 可维护性+设计模式规范（java-flow「实现」阶段引用） |
-| `skills/java-plan/SKILL.md` | skill | 大需求规划（spec+plan 落盘） |
-| `skills/java-plan/PLAN-SPEC-FORMAT.md` | reference | 精简版 spec/plan 格式 |
-| `skills/java-debug/SKILL.md` | skill | 系统化排查修 bug |
-| `skills/java-debug/DEBUG-METHODS.md` | reference | 排查手法 + 常见 Java bug 速查 |
-| `skills/java-test/SKILL.md` | skill | 测试策略与 TDD |
-| `skills/java-test/TEST-STRATEGIES.md` | reference | 分层 / Mock / TDD / 测试速查 |
+| `skills/context/SKILL.md` | skill | 元信息守护 |
+| `skills/doc/SKILL.md` | skill | 文档自动生成（主） |
+| `skills/doc/DOC-FORMATS.md` | reference | 三类文档格式规范 |
+| `skills/flow/SKILL.md` | skill | 小需求轻量开发流程 |
+| `skills/flow/CODING-STANDARDS.md` | reference | 可维护性+设计模式规范（flow「实现」阶段引用） |
+| `skills/plan/SKILL.md` | skill | 大需求规划（spec+plan 落盘） |
+| `skills/plan/PLAN-SPEC-FORMAT.md` | reference | 精简版 spec/plan 格式 |
+| `skills/debug/SKILL.md` | skill | 系统化排查修 bug |
+| `skills/debug/DEBUG-METHODS.md` | reference | 排查手法 + 常见 Java bug 速查 |
+| `skills/test/SKILL.md` | skill | 测试策略与 TDD |
+| `skills/test/TEST-STRATEGIES.md` | reference | 分层 / Mock / TDD / 测试速查 |
 | `lib/common.sh` | 共享库 | install.sh / validate.sh 共用：NAME_RE / validate_skill_name / get_frontmatter_field |
 | `docs/design/specs/2026-08-05-java-skills-design.md` | 文档 | 本设计文档 |
 
@@ -342,7 +341,7 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 - 不做 IDE 插件、LSP、CI/CD 集成。
 - 不做自动构建/发布/部署流水线。
-- 不重造通用 brainstorming / plan / debug 工具；`java-flow` 仅最小主干。
+- 不重造通用 brainstorming / plan / debug 工具；`flow` 仅最小主干。
 - 不做非 Java 后端场景（前端、移动端、JNI/native 等）的文档生成。
 - 不内置具体业务领域的接口/表结构假定。
 
@@ -364,7 +363,7 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 1. 用户复核本设计文档 → 确认/修订。
 2. 调用 `writing-plans` skill 产出分步实现计划。
-3. 按计划实现：先 `install.sh` 骨架 + `java-context`，再 `java-doc`（含 DOC-FORMATS.md），最后 `java-flow` 与 README。
+3. 按计划实现：先 `install.sh` 骨架 + `context`，再 `doc`（含 DOC-FORMATS.md），最后 `flow` 与 README。
 4. 在一个真实 Java 项目中验证双工具发现与文档生成效果。
 
 ---
@@ -378,8 +377,8 @@ _参考：[OpenCode Agent Skills](https://opencode.ai/docs/skills/) · [OpenCode
 初版交付后经历两轮演进，设计文档与当前代码的偏差记录于此（详细实现见 `docs/design/plans/2026-08-05-java-skills.md` 末尾「实现修订记录」）：
 
 - **质量重构**：引入 `lib/common.sh` 共享层（NAME_RE / validate_skill_name / get_frontmatter_field）；install.sh 拆分为 `install_one` / `uninstall_one` / `resolve_targets` / `provision_template` + `main()` 包裹；validate.sh 抽 `validate_one_skill` + early-return。原 §5 install.sh 逻辑描述仍准确，内部结构已函数化（SRP）。
-- **规范增强**：新增 `skills/java-flow/CODING-STANDARDS.md`，java-flow「实现」阶段硬性引用，回应"代码要可维护、注重设计模式"的要求。此为 §4.3 的补充——java-flow 产出的代码强制遵循 SOLID / 后端分层 / GoF 模式 / 测试友好。
-- **架构演进（三件套 → 四件套）**：拆出独立 `java-plan` skill 接管大需求规划（写精简 spec+plan 落盘 `docs/specs`、`docs/plans`）；java-flow 撤掉内嵌双模式，回归纯轻量流程；`PLAN-SPEC-FORMAT.md` 从 java-flow 移到 java-plan。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
-- **架构演进（四件套 → 五件套）**：新增独立 `java-debug` skill 接管 bug 排查（系统化：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；java-flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分。
-- **架构演进（五件套 → 六件套）**：新增独立 `java-test` skill 接管测试（定层 + TDD + 边界 + 覆盖），三原则焊死（测行为不测实现 / 一测试一件事 / 全绿才重构）；java-flow 的「自检」只保留"跑 test_cmd 验证"，写测试交给 java-test。理由：测试是独立方法论，按 SOLID-S 拆分。
+- **规范增强**：新增 `skills/flow/CODING-STANDARDS.md`，flow「实现」阶段硬性引用，回应"代码要可维护、注重设计模式"的要求。此为 §4.3 的补充——flow 产出的代码强制遵循 SOLID / 后端分层 / GoF 模式 / 测试友好。
+- **架构演进（三件套 → 四件套）**：拆出独立 `plan` skill 接管大需求规划（写精简 spec+plan 落盘 `docs/specs`、`docs/plans`）；flow 撤掉内嵌双模式，回归纯轻量流程；`PLAN-SPEC-FORMAT.md` 从 flow 移到 plan。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
+- **架构演进（四件套 → 五件套）**：新增独立 `debug` skill 接管 bug 排查（系统化：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分。
+- **架构演进（五件套 → 六件套）**：新增独立 `test` skill 接管测试（定层 + TDD + 边界 + 覆盖），三原则焊死（测行为不测实现 / 一测试一件事 / 全绿才重构）；flow 的「自检」只保留"跑 test_cmd 验证"，写测试交给 test。理由：测试是独立方法论，按 SOLID-S 拆分。
 - **不变项**：各 skill 单一职责的原则、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）未变。

@@ -1,5 +1,5 @@
 ---
-name: java-debug
+name: debug
 description: Use when fixing bugs, diagnosing exceptions/errors, or investigating performance issues in a Java backend. Systematic spine — reproduce, isolate, hypothesize, verify, fix root cause, regression-check, sync docs. Never guess-edit; reproduce before touching code; fix the cause not the symptom. Reads PROJECT-CONTEXT.md for stack info (test_cmd etc).
 ---
 
@@ -13,7 +13,7 @@ Run this systematic spine for Java debugging:
 4. **验证**: 最小改动 / 临时日志 / 单测验证假设。错了换假设，别死磕一个。
 5. **修复**: 改最少代码修**根因**（治本，别打补丁糊弄症状）。
 6. **回归**: 跑 `test_cmd`；想想这改动会不会引新坑（边界 / 并发 / 其他调用方）。
-7. **同步**: 动了 Controller/Entity/DTO/SQL，按 java-doc 更新文档。
+7. **同步**: 动了 Controller/Entity/DTO/SQL，按 doc 更新文档。
 
 排查手法与常见 Java bug 速查见 [DEBUG-METHODS.md](./DEBUG-METHODS.md)。
 
@@ -27,16 +27,16 @@ Run this systematic spine for Java debugging:
 2. **先定位根因再修**：禁止"我改改试试"撞运气。根因没找到就改 = 制造新 bug。
 3. **治本不治标**：找到根因修根因。别在症状上打补丁——补丁会积成技术债。
 
-## 何时用 java-debug
+## 何时用 debug
 
 - **用**：修 bug、排查异常（NPE / 超时 / 数据错乱）、性能问题、行为与预期不符。
-- **不用**：正常 feature 开发（走 java-flow）；大改动先规划（走 java-plan）。
+- **不用**：正常 feature 开发（走 flow）；大改动先规划（走 plan）。
 
-小 bug 直接 java-debug；**复杂 / 影响大的 bug** 先 java-plan 规划排查思路，再 java-debug 执行。
+小 bug 直接 debug；**复杂 / 影响大的 bug** 先 plan 规划排查思路，再 debug 执行。
 
 ## 与其他 skill 关系
 
-- 修完 bug 动到接口/实体 → 触发 java-doc 同步。
-- 大 bug 可先 java-plan 写排查计划（落盘 spec/plan），确认后 java-debug 执行。
+- 修完 bug 动到接口/实体 → 触发 doc 同步。
+- 大 bug 可先 plan 写排查计划（落盘 spec/plan），确认后 debug 执行。
 
 </supporting-info>

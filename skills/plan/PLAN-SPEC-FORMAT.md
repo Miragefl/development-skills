@@ -1,6 +1,6 @@
 # 精简版 Spec 与 Plan 格式
 
-供 java-flow 的「大需求」模式（plan/spec flow）使用。原则：**够用就行，不写长文**。区别于 superpowers 的几十页文档——这里一页 spec + 一个 task 清单。
+供 flow 的「大需求」模式（plan/spec flow）使用。原则：**够用就行，不写长文**。区别于 superpowers 的几十页文档——这里一页 spec + 一个 task 清单。
 
 ## 何时走 plan/spec flow（使用者自决）
 

@@ -1,5 +1,5 @@
 ---
-name: java-doc
+name: doc
 description: Use whenever writing or modifying Java Controllers, DTOs/Entities, or SQL/DDL in a Spring backend. Auto-generates and keeps in sync three doc types at fixed paths under doc_root — REST docs in api/, data-model docs in data-model/, DB scripts in db/. Adapts to Maven/Gradle and the project DB dialect. Reads PROJECT-CONTEXT.md for the stack.
 ---
 

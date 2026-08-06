@@ -1,5 +1,5 @@
 ---
-name: java-context
+name: context
 description: Use at the start of any Java backend task, or when project setup (JDK, build tool, database, ORM, package) info is needed. Reads PROJECT-CONTEXT.md from the repo root; if missing, creates it once from the template by scanning the code. Ensures project facts are never asked twice.
 ---
 

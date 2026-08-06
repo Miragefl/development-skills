@@ -1,6 +1,6 @@
 # Project Context
 
-> 本文件是项目的唯一元信息来源，供 java-context / java-doc / java-flow 读取。
+> 本文件是项目的唯一元信息来源，供 context / doc / flow 读取。
 > 拷到项目根目录改填；能从代码确认的字段（build/package）可留空让 AI 扫码补。
 
 - jdk: 17                      # 如 8 / 11 / 17 / 21

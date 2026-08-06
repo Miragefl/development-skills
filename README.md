@@ -1,6 +1,6 @@
 # Java Development Skills
 
-一套精简的自有 Java 后端开发 Skills，给 Claude Code 与 OpenCode 双工具通用。三个职责单一的 skill + 一个共享元信息底座。
+一套精简的自有 Java 后端开发 Skills，给 Claude Code 与 OpenCode 双工具通用。四个职责单一的 skill + 一个共享元信息底座。
 
 ## Skills
 
@@ -8,7 +8,8 @@
 |---|---|---|
 | `java-context` | 守护项目元信息（JDK/构建/DB/ORM…）于 `PROJECT-CONTEXT.md`，绝不重复问 | Java 任务开始时 |
 | `java-doc` | 写代码时自动生成/同步 接口/数据模型/DB脚本 三类文档到固定路径 | 写改 Controller/Entity/DTO/SQL 时 |
-| `java-flow` | 轻量开发流程主干，替代重型多阶段流程 | Java 功能/bug 开发时 |
+| `java-flow` | 小需求轻量开发流程主干，替代重型多阶段流程 | Java 小功能/bug 开发时 |
+| `java-plan` | 大需求先写精简 spec+plan 落盘（`docs/specs`、`docs/plans`），再实现 | 跨模块/架构级/大需求规划时 |
 
 ## 安装
 

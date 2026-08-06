@@ -13,7 +13,7 @@ When the user writes or modifies any of these, offer (and on approval, write) th
 
 Read `PROJECT-CONTEXT.md` first for `doc_root`, `db` (方言), `orm`, `package`, `modules`. Generate docs under `<doc_root>/api`, `<doc_root>/data-model`, `<doc_root>/db`.
 
-Follow the formats in [DOC-FORMATS.md](./DOC-FORMATS.md).
+Follow the formats in [DOC-FORMATS.md](./DOC-FORMATS.md). 生成/改 DDL（`db/schema.sql`、migrations）时遵循建表设计规范 [DB-DESIGN.md](./DB-DESIGN.md)（主键 / 字段 / 索引 / 命名 / 范式）。
 
 </what-to-do>
 

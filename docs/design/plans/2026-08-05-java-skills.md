@@ -756,3 +756,9 @@ Plan complete and saved to `docs/design/plans/2026-08-05-java-skills.md`.
 - README / spec(§4.6/§8/§12) 同步六件套。
 
 > 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs同步) → `96ce984`(四件套) → `341d7d9`(docs同步四件套) → `52766f2`(确认gate) → `1fc881d`(debug) → 本次(test)。
+
+### db 设计规范补强（2026-08-06，六件套不变）
+- 新增 **`skills/doc/DB-DESIGN.md`**（建表设计规范：主键策略/字段规范/索引原则/范式vs反范式/命名速查/分表YAGNI/迁移策略/反模式）。
+- `doc` 生成 DDL（`db/schema.sql`、migrations）时遵循它；`plan` spec 模板加「数据模型」维度引用它（大需求设计表时参考）。
+- 顺手修 `PLAN-SPEC-FORMAT.md` 第3行过时措辞（"flow 的大需求模式" → "plan"）。
+- 决策：db 设计是设计维度非开发动作，**不独立成 skill**，避免与 plan/flow/doc 职责重叠。

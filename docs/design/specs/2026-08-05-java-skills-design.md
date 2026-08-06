@@ -151,7 +151,7 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 **格式规范外置**：三类文档的具体格式（字段表结构、示例写法、DDL 模板）写入 `DOC-FORMATS.md`，主 SKILL.md 仅引用，避免主文件膨胀。
 
-**产物**：`skills/doc/SKILL.md` + `skills/doc/DOC-FORMATS.md`。
+**产物**：`skills/doc/SKILL.md` + `skills/doc/DOC-FORMATS.md` + `skills/doc/DB-DESIGN.md`（建表设计规范，生成 DDL 时遵循、plan 设计数据模型时参考）。
 
 ---
 
@@ -324,6 +324,7 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 | `skills/context/SKILL.md` | skill | 元信息守护 |
 | `skills/doc/SKILL.md` | skill | 文档自动生成（主） |
 | `skills/doc/DOC-FORMATS.md` | reference | 三类文档格式规范 |
+| `skills/doc/DB-DESIGN.md` | reference | 建表设计规范（主键/字段/索引/命名/范式） |
 | `skills/flow/SKILL.md` | skill | 小需求轻量开发流程 |
 | `skills/flow/CODING-STANDARDS.md` | reference | 可维护性+设计模式规范（flow「实现」阶段引用） |
 | `skills/plan/SKILL.md` | skill | 大需求规划（spec+plan 落盘） |
@@ -381,4 +382,5 @@ _参考：[OpenCode Agent Skills](https://opencode.ai/docs/skills/) · [OpenCode
 - **架构演进（三件套 → 四件套）**：拆出独立 `plan` skill 接管大需求规划（写精简 spec+plan 落盘 `docs/specs`、`docs/plans`）；flow 撤掉内嵌双模式，回归纯轻量流程；`PLAN-SPEC-FORMAT.md` 从 flow 移到 plan。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
 - **架构演进（四件套 → 五件套）**：新增独立 `debug` skill 接管 bug 排查（系统化：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分。
 - **架构演进（五件套 → 六件套）**：新增独立 `test` skill 接管测试（定层 + TDD + 边界 + 覆盖），三原则焊死（测行为不测实现 / 一测试一件事 / 全绿才重构）；flow 的「自检」只保留"跑 test_cmd 验证"，写测试交给 test。理由：测试是独立方法论，按 SOLID-S 拆分。
+- **db 设计规范补强**：新增 `skills/doc/DB-DESIGN.md`（建表设计规范：主键/字段/索引/命名/范式/分表/迁移）；doc 生成 DDL 时遵循，plan spec 模板加「数据模型」维度引用它。决策：db 设计是**设计维度**非开发动作，不独立成 skill，避免与 plan/flow/doc 职责重叠。
 - **不变项**：各 skill 单一职责的原则、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）未变。

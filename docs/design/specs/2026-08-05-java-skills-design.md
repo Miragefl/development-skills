@@ -250,6 +250,29 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 ---
 
+### 4.7 skill 协作流程
+
+各 skill 单一职责，按场景触发并衔接。核心链路：
+
+| 入口场景 | 链路 |
+|---|---|
+| 大需求 / 架构级 | java-plan（spec+plan + 确认 gate）→ java-flow（实现）→ java-test（测试） |
+| 小功能 | java-flow（实现）→ java-test（测试） |
+| 修 bug / 异常 / 性能 | java-debug（系统化排查 + 治本修复）→ java-test（回归测试） |
+
+**横切（所有场景共用）**：
+- 任何 skill 开干前读 `java-context` 维护的 `PROJECT-CONTEXT.md`（元信息底座，不重复问）。
+- 任意 skill 动到 Controller/Entity/DTO/SQL → 触发 `java-doc` 同步文档到 `docs/api`、`docs/data-model`、`docs/db`。
+
+**交接点（硬性 gate / 职责边界）**：
+- **java-plan → java-flow**：spec+plan 落盘后**必须用户确认**才转实现（确认 gate，见 §4.4）。
+- **java-flow → java-test**：flow 自检只跑 `test_cmd` 验证；写测试由 java-test 负责（见 §4.6）。
+- **java-debug → java-test**：bug 修完补回归测试，防回归。
+
+**自决原则**：使用者判断走哪条链路（大 / 小需求、feature / bug），AI 可建议但最终使用者定（见各 skill 的「何时用」）。
+
+---
+
 ## 5. `install.sh` 设计
 
 **用法**：

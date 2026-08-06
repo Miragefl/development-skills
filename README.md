@@ -13,6 +13,26 @@
 | `java-debug` | 系统化排查修 bug（复现→隔离→假设→验证→治本修复），禁止瞎猜 | 修 bug / 排查异常 / 性能问题时 |
 | `java-plan` | 大需求先写精简 spec+plan 落盘（`docs/specs`、`docs/plans`），再实现 | 跨模块/架构级/大需求规划时 |
 
+## 流程
+
+一个 Java 后端任务，skill 这样串起来（每个单一职责，按需触发）：
+
+```
+任务来了 → java-context 读 PROJECT-CONTEXT.md（一次，元信息底座）
+│
+├─ 大需求 / 架构级 → java-plan 写 spec+plan →【用户确认】→ java-flow 实现 → java-test 测试
+├─ 小功能         → java-flow 实现 → java-test 测试
+├─ 修 bug / 异常  → java-debug 系统化排查 → java-test 补回归测试
+│
+└─ 任意阶段动到 Controller/Entity/DTO/SQL → java-doc 自动同步文档
+```
+
+**协作铁律**：
+- `java-context` 是所有 skill 的元信息底座，开干前先读。
+- `java-plan` 写完 spec+plan **必须停下等用户确认**，确认后才自动转 `java-flow`。
+- `java-flow` 只写实现 + 跑 `test_cmd` 验证；**写测试交给 `java-test`**。
+- `java-doc` 在任何 skill 动到接口/实体/SQL 时自动触发，生成 `docs/api`、`docs/data-model`、`docs/db`。
+
 ## 安装
 
 ```bash

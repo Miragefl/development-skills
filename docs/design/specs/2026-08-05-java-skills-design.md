@@ -178,7 +178,7 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 - 改完代码同步 `java-doc` 文档
 - 简单任务直接做，不强行套流程
 
-**产物**：`skills/java-flow/SKILL.md`（数十行，grill-me 调性）。
+**产物**：`skills/java-flow/SKILL.md`（数十行，grill-me 调性）+ `skills/java-flow/CODING-STANDARDS.md`（可维护性+设计模式规范，「实现」阶段硬性引用——见 §12 演进）。
 
 ---
 
@@ -235,6 +235,8 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 | `skills/java-doc/SKILL.md` | skill | 文档自动生成（主） |
 | `skills/java-doc/DOC-FORMATS.md` | reference | 三类文档格式规范 |
 | `skills/java-flow/SKILL.md` | skill | 轻量开发流程 |
+| `skills/java-flow/CODING-STANDARDS.md` | reference | 可维护性+设计模式规范（java-flow「实现」阶段引用） |
+| `lib/common.sh` | 共享库 | install.sh / validate.sh 共用：NAME_RE / validate_skill_name / get_frontmatter_field |
 | `docs/design/specs/2026-08-05-java-skills-design.md` | 文档 | 本设计文档 |
 
 ---
@@ -271,3 +273,13 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 ---
 
 _参考：[OpenCode Agent Skills](https://opencode.ai/docs/skills/) · [OpenCode Rules](https://opencode.ai/docs/rules/) · [agents.md 开放标准](https://agents.md/) · grill-me / grill-with-docs（context-mode 插件）_
+
+---
+
+## 12. 设计演进（同步于 2026-08-06）
+
+初版交付后经历两轮演进，设计文档与当前代码的偏差记录于此（详细实现见 `docs/design/plans/2026-08-05-java-skills.md` 末尾「实现修订记录」）：
+
+- **质量重构**：引入 `lib/common.sh` 共享层（NAME_RE / validate_skill_name / get_frontmatter_field）；install.sh 拆分为 `install_one` / `uninstall_one` / `resolve_targets` / `provision_template` + `main()` 包裹；validate.sh 抽 `validate_one_skill` + early-return。原 §5 install.sh 逻辑描述仍准确，内部结构已函数化（SRP）。
+- **规范增强**：新增 `skills/java-flow/CODING-STANDARDS.md`，java-flow「实现」阶段硬性引用，回应"代码要可维护、注重设计模式"的要求。此为 §4.3 的补充——java-flow 产出的代码强制遵循 SOLID / 后端分层 / GoF 模式 / 测试友好。
+- **不变项**：三个 skill 的职责边界、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）、java-flow 不生成 plan/spec 的精简定位（§4.3）均未变。

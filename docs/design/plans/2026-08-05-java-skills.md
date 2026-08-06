@@ -712,3 +712,25 @@ git commit -m "test: e2e verification"
 ## Execution Handoff
 
 Plan complete and saved to `docs/design/plans/2026-08-05-java-skills.md`.
+
+---
+
+## 实现修订记录（2026-08-06 同步）
+
+本计划执行中，部分 task 实现与原计划有偏差（bug 修复 + 质量重构 + 规范增强）。**代码以仓库当前实际文件为准**，此记录说明偏差与演进：
+
+### Bug 修复（执行 Task 2/7 时发现并修）
+- **validate.sh `set -e` 短路**：原 `[ ] && echo` 在首个非 OK 时让脚本崩溃 → 改局部判定（后重构为 early-return）。
+- **install.sh `$dest_pc（` 全角括号并入变量名**：bash 把 `（` 字节并入变量名致 unbound → `${dest_pc}` 花括号定界。
+- **install.sh 卸载残留**：`--uninstall` 漏清 `~/.config/opencode/skills` → 卸载时两路径都清。
+
+### 质量重构（simplify 4-agent 审查后）
+- 新增 **`lib/common.sh`** 共享层：`NAME_RE` / `validate_skill_name()` / `get_frontmatter_field()`，两脚本 source（消除跨脚本 DRY）。
+- **install.sh** 拆分：`install_one` / `uninstall_one`（干掉 link_one 的 UNINSTALL 开关分支）+ `resolve_targets` + `provision_template` + `main()` 包裹；`PROJECT_ABS` 一次解析；`echo|grep` → `[[ =~ ]]`；错误处理升级（不合规 name 非0退出）。
+- **validate.sh** 抽 `validate_one_skill` + early-return 删 `this_ok`；改用 common 的函数。
+- **跳过的过度设计**（记录在案）：工具表数据驱动、统一遍历器、ROOT 抽函数、BASH_SOURCE 测试守卫、合并 1 次 awk、getopts。
+
+### 规范增强（2026-08-06）
+- 新增 **`skills/java-flow/CODING-STANDARDS.md`**（可维护性总则 / SOLID / 后端分层 / GoF 模式 / 测试友好），java-flow「实现」步骤硬性引用——回应"代码要可维护、注重设计模式"的要求。
+
+> git 历史：`5195c00`（init）→ `670a173`（CODING-STANDARDS）。

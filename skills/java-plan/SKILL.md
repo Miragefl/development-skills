@@ -1,6 +1,6 @@
 ---
 name: java-plan
-description: Use for large Java backend efforts — cross-module, architecture-level, multi-session, or multi-person work. Writes a brief one-page spec to docs/specs/ and a task-checklist plan to docs/plans/ (format in PLAN-SPEC-FORMAT.md) before implementation. Pair with java-flow for the actual coding. Skip for small tasks — use java-flow directly.
+description: Use for large Java backend efforts — cross-module, architecture-level, multi-session, or multi-person work. Writes a brief one-page spec to docs/specs/ and a task-checklist plan to docs/plans/ (format in PLAN-SPEC-FORMAT.md), waits for user approval, then auto-invokes java-flow for implementation. Skip for small tasks — use java-flow directly.
 ---
 
 <what-to-do>
@@ -10,11 +10,16 @@ For a large Java backend effort, produce a brief spec + plan **before** coding:
 1. **读上下文**: 读 `PROJECT-CONTEXT.md`（不存在则先按 java-context 创建）。
 2. **写精简 spec** 到 `docs/specs/<需求名>.md`：目标（一句话）/ 约束 / 模块拆解 / 关键决策 / 风险。格式见 [PLAN-SPEC-FORMAT.md](./PLAN-SPEC-FORMAT.md)。一页纸为限。
 3. **写精简 plan** 到 `docs/plans/<需求名>.md`：Task 清单，每条标改哪些文件 + 怎么验证 + `- [ ]`。
-4. **使用者认可后**，交由 java-flow 实现（或继续在此会话推进）。
+4. **停下来等用户确认**：spec+plan 写完后，明确请用户审阅确认，**不要自动往下实现**。用户要改 → 改完再次确认；用户未确认 → 停在规划阶段。
+5. **确认后自动转 java-flow**：用户确认 spec+plan 后，自动衔接 java-flow 进入实现（套用 CODING-STANDARDS.md，动 Controller/Entity/DTO/SQL 时同步 java-doc）。
 
 </what-to-do>
 
 <supporting-info>
+
+## 确认 gate（重要）
+
+第 4 步是硬性 gate：**spec+plan 落盘后必须停下等确认**，绝不在用户没点头前开始写代码。这是 java-plan 与 java-flow 的交接点——确认即授权实现，不确认就停在规划。
 
 ## 何时用 java-plan（使用者自决）
 
@@ -25,8 +30,8 @@ For a large Java backend effort, produce a brief spec + plan **before** coding:
 
 ## 与其他 skill 的关系
 
-- 规划完的**实现**交给 `java-flow`（轻量流程 + 套用 CODING-STANDARDS.md）。
-- 接口/模型/DB 文档仍由 `java-doc` 在实现时自动生成——java-plan 不产那些。
+- **确认后**的实现交给 `java-flow`（轻量流程 + CODING-STANDARDS.md）。
+- 接口/模型/DB 文档仍由 `java-doc` 在实现时自动生成。
 - java-plan 只产 `docs/specs/` + `docs/plans/`。
 
 ## 原则

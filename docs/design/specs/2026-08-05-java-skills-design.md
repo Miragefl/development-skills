@@ -191,7 +191,8 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 1. 读 `PROJECT-CONTEXT.md`（不存在则先按 java-context 创建）。
 2. 写精简 spec 到 `docs/specs/<需求名>.md`：目标(一句话) / 约束 / 模块拆解 / 关键决策 / 风险，一页纸为限。
 3. 写精简 plan 到 `docs/plans/<需求名>.md`：Task 清单，每条标改哪些文件 + 怎么验证 + `- [ ]`。
-4. 使用者认可后，交 java-flow 实现。
+4. **停下来等用户确认**（硬性 gate）：spec+plan 落盘后明确请用户审阅，不在确认前开始写代码；要改则改完再次确认。
+5. **确认后自动转 java-flow**：衔接 java-flow 进入实现（套用 CODING-STANDARDS，动 Controller/Entity/DTO/SQL 时同步 java-doc）。
 
 **与 java-flow 的分工**：小需求直接 java-flow；大需求先 java-plan 规划再 java-flow 实现。**使用者自决，AI 可建议**。拿不准选 java-flow——文档随时能补，别为小活儿套重壳。
 

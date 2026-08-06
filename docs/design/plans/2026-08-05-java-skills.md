@@ -748,3 +748,11 @@ Plan complete and saved to `docs/design/plans/2026-08-05-java-skills.md`.
 - README / spec 同步为五件套。
 
 > 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs同步) → `96ce984`(四件套) → `341d7d9`(docs同步四件套) → `52766f2`(确认gate) → 本次(java-debug)。
+
+### 架构演进（2026-08-06，五件套 → 六件套）
+- 新增独立 **`java-test`** skill（测试策略 + TDD + 边界 + 覆盖），三原则焊死（测行为不测实现 / 一测试一件事 / 全绿才重构）；附 `TEST-STRATEGIES.md`（分层 / Mock / TDD / Java 测试速查）。
+- java-flow「自检」只保留跑 test_cmd 验证，写测试交给 java-test；java-flow supporting-info 加指向。
+- 理由：测试是独立方法论，按 SOLID-S 拆分（与 java-plan/java-debug 同款逻辑）。
+- README / spec(§4.6/§8/§12) 同步六件套。
+
+> 完整 git 历史：`5195c00`(init) → `670a173`(CODING-STANDARDS) → `e782f7c`(docs同步) → `96ce984`(四件套) → `341d7d9`(docs同步四件套) → `52766f2`(确认gate) → `1fc881d`(java-debug) → 本次(java-test)。

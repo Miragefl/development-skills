@@ -22,6 +22,10 @@ Run this lightweight spine for Java backend work:
 
 若需求大（跨模块/架构级/跨会话/多人协作），先用 **java-plan** 写精简 spec+plan 落盘，再回来实现。小需求直接走上面的流程，不落盘规划。
 
+## 写测试
+
+写测试 / 上 TDD / 补覆盖用 **java-test**。flow 的「自检」只跑 `test_cmd` 验证，不负责写测试。
+
 ## 代码质量（硬性要求）
 
 「实现」阶段产出的代码必须遵循 [CODING-STANDARDS.md](./CODING-STANDARDS.md)：可维护性总则 / SOLID / 后端分层 / GoF 模式 / 测试友好。这是质量底线，不是建议。

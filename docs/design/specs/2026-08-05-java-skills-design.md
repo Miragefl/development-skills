@@ -226,6 +226,30 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 
 ---
 
+### 4.6 `java-test` —— 测试策略与 TDD
+
+**触发描述（description 草案）**：
+> Use when writing tests, applying TDD, or deciding test strategy for a Java backend. Pairs with java-flow — flow writes code, this writes tests.
+
+**行为规约**：
+1. **定层**：单元（Service/逻辑）/ 集成（Controller）/ DAO（Mapper），不混层。
+2. **先写失败测试（TDD）**：针对行为写会失败的测试（Red），测行为不测实现。
+3. **跑出失败**：确认因预期断言失败（不是编译错）。
+4. **实现到通过**：最少代码让测试通过（Green）。
+5. **补边界**：null/空/越界/并发/异常/权限/时间。
+6. **回归**：全量 `test_cmd` 通过。
+7. **重构**：全绿下才重构。
+
+**三条原则**：① 测行为不测实现 ② 一个测试一件事 ③ 测试是安全网（全绿才重构）。
+
+**与 flow 分工**：flow 写实现（自检只跑 `test_cmd` 验证）；java-test 写测试、定策略、TDD。
+
+**格式外置**：分层 / Mock / TDD / Java 测试速查见 `TEST-STRATEGIES.md`。
+
+**产物**：`skills/java-test/SKILL.md` + `skills/java-test/TEST-STRATEGIES.md`。
+
+---
+
 ## 5. `install.sh` 设计
 
 **用法**：
@@ -284,6 +308,8 @@ java-development-skills/                 ← 独立 git 仓库（本目录）
 | `skills/java-plan/PLAN-SPEC-FORMAT.md` | reference | 精简版 spec/plan 格式 |
 | `skills/java-debug/SKILL.md` | skill | 系统化排查修 bug |
 | `skills/java-debug/DEBUG-METHODS.md` | reference | 排查手法 + 常见 Java bug 速查 |
+| `skills/java-test/SKILL.md` | skill | 测试策略与 TDD |
+| `skills/java-test/TEST-STRATEGIES.md` | reference | 分层 / Mock / TDD / 测试速查 |
 | `lib/common.sh` | 共享库 | install.sh / validate.sh 共用：NAME_RE / validate_skill_name / get_frontmatter_field |
 | `docs/design/specs/2026-08-05-java-skills-design.md` | 文档 | 本设计文档 |
 
@@ -332,4 +358,5 @@ _参考：[OpenCode Agent Skills](https://opencode.ai/docs/skills/) · [OpenCode
 - **规范增强**：新增 `skills/java-flow/CODING-STANDARDS.md`，java-flow「实现」阶段硬性引用，回应"代码要可维护、注重设计模式"的要求。此为 §4.3 的补充——java-flow 产出的代码强制遵循 SOLID / 后端分层 / GoF 模式 / 测试友好。
 - **架构演进（三件套 → 四件套）**：拆出独立 `java-plan` skill 接管大需求规划（写精简 spec+plan 落盘 `docs/specs`、`docs/plans`）；java-flow 撤掉内嵌双模式，回归纯轻量流程；`PLAN-SPEC-FORMAT.md` 从 java-flow 移到 java-plan。理由：SOLID-S 单一职责——flow 不再既管轻量流程又管大需求规划。
 - **架构演进（四件套 → 五件套）**：新增独立 `java-debug` skill 接管 bug 排查（系统化：复现→隔离→假设→验证→治本修复→回归），三铁律焊死（不复现不改 / 先定位根因 / 治本不治标）；java-flow 不再背"修 bug"职责，专注 feature。理由：debug 与 feature 是不同心智模型，按 SOLID-S 拆分。
+- **架构演进（五件套 → 六件套）**：新增独立 `java-test` skill 接管测试（定层 + TDD + 边界 + 覆盖），三原则焊死（测行为不测实现 / 一测试一件事 / 全绿才重构）；java-flow 的「自检」只保留"跑 test_cmd 验证"，写测试交给 java-test。理由：测试是独立方法论，按 SOLID-S 拆分。
 - **不变项**：各 skill 单一职责的原则、文档路径约定（§6）、跨工具发现机制（§3.3）、多栈适配（§7）未变。

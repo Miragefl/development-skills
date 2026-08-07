@@ -18,6 +18,6 @@ On every task, reuse this file. Never re-ask JDK / build tool / database / ORM /
 
 <supporting-info>
 
-If `PROJECT-CONTEXT.md` contradicts the code (e.g. says `gradle` but `pom.xml` exists), point it out and fix the file. Keep entries as a flat bullet list of `- key: value`. Fields: jdk, build, build_cmd, run_cmd, test_cmd, db, orm, package, doc_root, modules, notes.
+If `PROJECT-CONTEXT.md` contradicts the code (e.g. says `gradle` but `pom.xml` exists), point it out and fix the file. Keep entries as a flat bullet list of `- key: value`. **生成/填写时，注释、说明、notes 一律用中文写**；字段名（jdk/build/db 等）保持英文，因为它们是 skill 机器解析的 key。Fields: jdk, build, build_cmd, run_cmd, test_cmd, db, orm, package, doc_root, modules, notes.
 
 </supporting-info>

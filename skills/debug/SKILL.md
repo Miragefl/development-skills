@@ -1,11 +1,11 @@
 ---
 name: debug
-description: Use when fixing bugs, diagnosing exceptions/errors, or investigating performance issues in a Java backend. Systematic spine — reproduce, isolate, hypothesize, verify, fix root cause, regression-check, sync docs. Never guess-edit; reproduce before touching code; fix the cause not the symptom. Reads PROJECT-CONTEXT.md for stack info (test_cmd etc).
+description: Use when fixing bugs, diagnosing exceptions/errors, or investigating performance issues. Systematic spine — reproduce, isolate, hypothesize, verify, fix root cause, regression-check, sync docs. Never guess-edit; reproduce before touching code; fix the cause not the symptom. Reads PROJECT-CONTEXT.md for test_cmd and language (stacks/<lang>.md has language-specific bug cheatsheet).
 ---
 
 <what-to-do>
 
-Run this systematic spine for Java debugging:
+Run this systematic spine for debugging:
 
 1. **复现**: 稳定复现 bug，记下确切步骤/输入/环境。**不能复现就先把它弄复现**——别动代码。
 2. **隔离**: 二分注释 / 加日志 / 断点，把范围缩到具体模块 → 方法 → 行。
@@ -13,9 +13,9 @@ Run this systematic spine for Java debugging:
 4. **验证**: 最小改动 / 临时日志 / 单测验证假设。错了换假设，别死磕一个。
 5. **修复**: 改最少代码修**根因**（治本，别打补丁糊弄症状）。
 6. **回归**: 跑 `test_cmd`；想想这改动会不会引新坑（边界 / 并发 / 其他调用方）。
-7. **同步**: 动了 Controller/Entity/DTO/SQL，按 doc 更新文档。
+7. **同步**: 动了接口/数据模型/存储层代码，按 doc 更新文档。
 
-排查手法与常见 Java bug 速查见 [DEBUG-METHODS.md](./DEBUG-METHODS.md)。
+排查手法见 [DEBUG-METHODS.md](./DEBUG-METHODS.md)（通用层）；语言 bug 速查见 `./stacks/<language>.md`（language 读自 PROJECT-CONTEXT.md；不存在则只用通用层）。
 
 </what-to-do>
 

@@ -18,7 +18,7 @@
 <一句话：要解决什么问题>
 
 ## 约束
-- 技术栈/版本（读 PROJECT-CONTEXT.md）
+- 技术栈/语言（读 PROJECT-CONTEXT.md 的 language 及版本字段）
 - 边界（做什么、不做什么）
 
 ## 模块拆解

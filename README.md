@@ -1,6 +1,6 @@
 # Java Development Skills
 
-一套精简的自有 Java 后端开发 Skills，给 Claude Code 与 OpenCode 双工具通用。六个职责单一的 skill + 一个共享元信息底座。
+一套精简的**多语言**开发 Skills（通用层 + 语言定制包），给 Claude Code 与 OpenCode 双工具通用。六个职责单一的 skill + 共享元信息底座；内置 **Java** 与 **Swift(macOS)** 定制包，其他语言加一个 `stacks/<LANG>.md` 即可。
 
 ## Skills
 
@@ -15,7 +15,7 @@
 
 ## 流程
 
-一个 Java 后端任务，skill 这样串起来（每个单一职责，按需触发）：
+一个开发任务，skill 这样串起来（每个单一职责，按需触发）：
 
 ```
 任务来了 → context 读 PROJECT-CONTEXT.md（一次，元信息底座）
@@ -49,7 +49,7 @@ cd java-development-skills
 
 ## 使用
 
-1. 在你的 Java 项目根创建 `PROJECT-CONTEXT.md`（`--project` 安装会自动拷模板；否则 `cp PROJECT-CONTEXT.template.md 你的项目/PROJECT-CONTEXT.md`），填好 JDK/构建/DB/ORM。
+1. 在你的项目根创建 `PROJECT-CONTEXT.md`（`--project` 安装会自动拷模板；否则 `cp PROJECT-CONTEXT.template.md 你的项目/PROJECT-CONTEXT.md`），填好 **language（语言，决定加载哪门定制包）**、运行时版本、构建、DB。
 2. 正常开聊——AI 会按场景自动触发对应 skill。
 3. 文档会生成在项目的 `<doc_root>/`（默认 `docs/`）下：`api/`、`data-model/`、`db/`。
 4. **OpenCode 用户**：`./install.sh --opencode` 额外装 `/d-context` `/d-doc` `/d-flow` `/d-test` `/d-debug` `/d-plan` 手动命令（`d-` 前缀避免与 OpenCode 内置命令撞名）。OpenCode 的 skill 只支持 AI 自动触发，**不支持 `/skill-name`**——这 6 个 command 文件就是给你手动 `/d-plan` 的入口（内容引导 AI 加载对应 skill）。

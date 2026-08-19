@@ -1,11 +1,11 @@
 ---
 name: context
-description: Use at the start of any Java backend task, or when project setup (JDK, build tool, database, ORM, package) info is needed. Reads PROJECT-CONTEXT.md from the repo root; if missing, creates it once from the template by scanning the code. Ensures project facts are never asked twice.
+description: Use at the start of any development task, or when project setup (JDK, build tool, database, ORM, package) info is needed. Reads PROJECT-CONTEXT.md from the repo root; if missing, creates it once from the template by scanning the code. Ensures project facts are never asked twice.
 ---
 
 <what-to-do>
 
-Before any Java backend work, read `PROJECT-CONTEXT.md` at the repo root.
+Before starting work, read `PROJECT-CONTEXT.md` at the repo root.
 
 If it does not exist:
 1. Scan the code to fill what you can — `pom.xml` → `build: maven` + `language: java`, `build.gradle` → `build: gradle` + `language: java`; most sources are `.swift` → `language: swift`; `go.mod` → `language: go`; `package.json` dominant → `language: node`; `@Entity` → `orm: jpa`, `@TableName` → `orm: mybatis-plus`; detect JDK from `pom.xml` `<maven.compiler.release>` or `build.gradle` `sourceCompatibility`; detect package from the top-level `package` statement.

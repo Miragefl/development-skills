@@ -1,11 +1,11 @@
 ---
 name: flow
-description: Use for Java backend feature/bug work when you want a lightweight flow. Minimal spine — understand need, brief design notes only if complex, implement, self-check (compile/test), sync docs via doc. Always read PROJECT-CONTEXT.md first; never re-ask known project facts; code follows CODING-STANDARDS.md. For large efforts, plan first with plan.
+description: Use for feature/bug work when you want a lightweight flow. Minimal spine — understand need, brief design notes only if complex, implement, self-check (compile/test), sync docs via doc. Always read PROJECT-CONTEXT.md first; never re-ask known project facts; code follows CODING-STANDARDS.md. For large efforts, plan first with plan.
 ---
 
 <what-to-do>
 
-Run this lightweight spine for Java backend work:
+Run this lightweight spine:
 
 1. **读上下文**: 读 `PROJECT-CONTEXT.md`（不存在则先按 context 创建）。绝不重问已知项目事实。
 2. **理解需求**: 用一句话复述要做什么；模糊处一次问一个。

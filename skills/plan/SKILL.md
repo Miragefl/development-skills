@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Use for large Java backend efforts — cross-module, architecture-level, multi-session, or multi-person work. Writes a brief one-page spec to docs/specs/ and a task-checklist plan to docs/plans/ (format in PLAN-SPEC-FORMAT.md), waits for user approval, then auto-invokes flow for implementation. Skip for small tasks — use flow directly.
+description: Use for large development efforts — cross-module, architecture-level, multi-session, or multi-person work. Writes a brief one-page spec to docs/specs/ and a task-checklist plan to docs/plans/ (format in PLAN-SPEC-FORMAT.md), waits for user approval, then auto-invokes flow for implementation. Skip for small tasks — use flow directly.
 ---
 
 <what-to-do>

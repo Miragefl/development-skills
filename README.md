@@ -1,6 +1,6 @@
-# Java Development Skills
+# Development Skills
 
-一套精简的**多语言**开发 Skills（通用层 + 语言定制包），给 Claude Code 与 OpenCode 双工具通用。六个职责单一的 skill + 共享元信息底座；内置 **Java** 与 **Swift(macOS)** 定制包，其他语言加一个 `stacks/<LANG>.md` 即可。
+一套精简的**多语言**开发 Skills（通用层 + 语言定制包），给 Claude Code 与 OpenCode 双工具通用。六个职责单一的 skill + 共享元信息底座；内置 **Java** 与 **Swift(macOS)** 定制包，其他语言在每个 skill 下加 `skills/<skill>/stacks/<LANG>.md` 即可。
 
 ## Skills
 
@@ -41,7 +41,7 @@ cd development-skills
 
 ./install.sh                 # 默认装到 ~/.claude/skills/（Claude Code + OpenCode 都能发现）
 ./install.sh --opencode      # OpenCode 专用：装 skill 到 ~/.config/opencode/skills/ + command 到 commands/（/d-plan /d-flow 等手动命令）
-./install.sh --project /path/to/your-java-app   # 装到指定项目的 .claude/skills/
+./install.sh --project /path/to/your-app       # 装到指定项目的 .claude/skills/
 ./install.sh --uninstall     # 卸载
 ```
 
@@ -56,7 +56,7 @@ cd development-skills
 
 ## 设计
 
-见 [docs/design/specs/2026-08-05-java-skills-design.md](docs/design/specs/2026-08-05-java-skills-design.md)。
+见 [docs/design/specs/2026-08-19-universal-skills-design.md](docs/design/specs/2026-08-19-universal-skills-design.md)（通用化设计；前身 [Java 版设计](docs/design/specs/2026-08-05-java-skills-design.md)）。
 
 ## License
 

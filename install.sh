@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 安装 Java 开发 skills 到 Claude Code / OpenCode 共认目录
+# 安装开发 skills 到 Claude Code / OpenCode 共认目录
 # 用法: ./install.sh [--opencode] [--project <path>] [--uninstall]
 set -euo pipefail
 
@@ -73,7 +73,7 @@ provision_template() {
     # ${dest_pc} 必须花括号：后跟全角"（"，否则 bash 把其字节并入变量名
     [ -f "${dest_pc}" ] || { cp "$TEMPLATE" "${dest_pc}"; echo "已创建: ${dest_pc}（请填写）"; }
   else
-    echo "提示: 在你的 Java 项目根运行 'cp ${TEMPLATE} <project>/PROJECT-CONTEXT.md' 并填写"
+    echo "提示: 在你的项目根运行 'cp ${TEMPLATE} <project>/PROJECT-CONTEXT.md' 并填写"
   fi
 }
 
@@ -107,7 +107,7 @@ provision_commands() {
 }
 
 main() {
-  echo "== Java Skills $([ "$UNINSTALL" -eq 1 ] && echo 卸载 || echo 安装) =="
+  echo "== Development Skills $([ "$UNINSTALL" -eq 1 ] && echo 卸载 || echo 安装) =="
   local fail=0
   resolve_targets
   for src in "$SKILLS_SRC"/*/; do

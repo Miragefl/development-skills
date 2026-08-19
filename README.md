@@ -36,8 +36,8 @@
 ## 安装
 
 ```bash
-git clone https://github.com/Miragefl/java-development-skills java-development-skills
-cd java-development-skills
+git clone https://github.com/Miragefl/development-skills development-skills
+cd development-skills
 
 ./install.sh                 # 默认装到 ~/.claude/skills/（Claude Code + OpenCode 都能发现）
 ./install.sh --opencode      # OpenCode 专用：装 skill 到 ~/.config/opencode/skills/ + command 到 commands/（/d-plan /d-flow 等手动命令）

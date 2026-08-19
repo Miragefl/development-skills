@@ -56,7 +56,7 @@
 
 ### 3.1 仓库结构
 ```
-java-development-skills/                 ← 独立 git 仓库（本目录）
+development-skills/                 ← 独立 git 仓库（本目录）
 ├── README.md                            # 是啥 / 咋装 / 咋用
 ├── install.sh                           # 一键安装（CC + OpenCode 通用）
 ├── PROJECT-CONTEXT.template.md          # 元信息模板（拷到目标项目根改填）

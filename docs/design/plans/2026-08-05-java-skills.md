@@ -56,7 +56,7 @@
 - [ ] **Step 1: 创建目录骨架**
 
 ```bash
-cd /Users/viscum/Documents/code/justfun/ai/java-development-skills
+cd /Users/viscum/Documents/code/justfun/ai/development-skills
 mkdir -p skills/context skills/doc skills/flow tools
 ```
 
@@ -601,8 +601,8 @@ cat > README.md <<'EOF'
 ## 安装
 
 ```bash
-git clone <repo-url> java-development-skills
-cd java-development-skills
+git clone <repo-url> development-skills
+cd development-skills
 
 ./install.sh                 # 默认装到 ~/.claude/skills/（Claude Code + OpenCode 都能发现）
 ./install.sh --opencode      # 额外装到 ~/.config/opencode/skills/（双保险）

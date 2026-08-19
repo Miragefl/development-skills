@@ -12,7 +12,7 @@ Run this lightweight spine:
 3. **设计要点**: 仅当任务复杂才写几条设计要点；简单任务直接做，不套流程。
 4. **实现**: 改代码前先读相关现有代码；遵循现有模式；可维护性与设计模式遵循 [CODING-STANDARDS.md](./CODING-STANDARDS.md)（SOLID/模式/可测试性）+ `./stacks/<language>.md` 语言定制层（language 读自 PROJECT-CONTEXT.md；文件不存在则只用通用层）。
 5. **自检**: 跑 `test_cmd`（编译/测试），基于结果而非猜测。
-6. **同步文档**: 若动了 Controller/Entity/DTO/SQL，按 doc 更新对应文档。
+6. **同步文档**: 若动了接口/数据模型/存储层代码，按 doc 更新对应文档。
 
 </what-to-do>
 

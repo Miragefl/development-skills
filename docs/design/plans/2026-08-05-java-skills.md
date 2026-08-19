@@ -768,3 +768,10 @@ Plan complete and saved to `docs/design/plans/2026-08-05-java-skills.md`.
 - `install.sh --opencode` 扩展：新增 `provision_commands` 函数，同时装 skill 到 `~/.config/opencode/skills/` + command 到 `~/.config/opencode/commands/`（--project 模式装到 `<project>/.opencode/commands/`）。卸载 sweep 清两处。
 - 原因：OpenCode 的 skill 只支持 AI 自动触发（`skill` 工具），**不支持 `/<skill-name>`**（与 Claude Code 不同）；独立 command 文件做手动 `/plan` 入口。
 - 已测：`HOME=tmp ./install.sh --opencode` skill(6)+command(6) 同装；卸载干净；command 软链仓库可 git pull 自动更新。
+
+### 通用化改造（2026-08-19，通用层 + 语言定制包）
+- 四个 reference（CODING-STANDARDS/TEST-STRATEGIES/DEBUG-METHODS/DOC-FORMATS）拆「通用层 + stacks/JAVA.md」，Java 内容原样搬入一字不丢。
+- 新增 **Swift/macOS 定制包 ×4**（flow: MVVM/值语义/Optional 安全；test: Swift Testing/protocol mock；debug: retain cycle/主线程速查；doc: macOS 文档适配）。
+- `PROJECT-CONTEXT.md` 加 `language` 路由字段；jdk 语义泛化。六个 SKILL.md description/主干中性化（多语言可触发——plan gap 补齐）。
+- install.sh / opencode-commands 零改动（skill 自包含，stacks 随软链可达，已测）。
+- Go/Node 定制包：用到再加（各一个 md）。设计见 `2026-08-19-universal-skills-design.md`，计划见 `2026-08-19-universal-skills.md`。

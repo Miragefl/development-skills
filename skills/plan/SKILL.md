@@ -5,7 +5,7 @@ description: Use for large development efforts — cross-module, architecture-le
 
 <what-to-do>
 
-For a large Java backend effort, produce a brief spec + plan **before** coding:
+For a large development effort, produce a brief spec + plan **before** coding:
 
 1. **读上下文**: 读 `PROJECT-CONTEXT.md`（不存在则先按 context 创建）。
 2. **写精简 spec** 到 `docs/specs/<需求名>.md`：目标（一句话）/ 约束 / 模块拆解 / 关键决策 / 风险。格式见 [PLAN-SPEC-FORMAT.md](./PLAN-SPEC-FORMAT.md)。一页纸为限。

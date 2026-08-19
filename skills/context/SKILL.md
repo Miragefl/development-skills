@@ -12,7 +12,7 @@ If it does not exist:
 2. Create `PROJECT-CONTEXT.md` from the template (`PROJECT-CONTEXT.template.md`) with those values filled; leave the rest as guided prompts.
 3. Ask the user only for what code cannot reveal (e.g. `db` type/version, `notes`), one question at a time.
 
-On every task, reuse this file. Never re-ask JDK / build tool / database / ORM / package — read it here.
+On every task, reuse this file. Never re-ask runtime / build tool / database / ORM / package — read it here.
 
 </what-to-do>
 
